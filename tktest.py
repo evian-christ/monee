@@ -10,7 +10,7 @@ main.title("Testing...")
 main.geometry("350x200")
 
 # Labels
-lbl = Label(main, "Welcome!")
+lbl = Label(main, text = "Welcome!")
 lbl.grid()
 
 # Execute TkInter
