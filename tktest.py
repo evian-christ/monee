@@ -5,9 +5,16 @@ main = Tk()
 
 # Title
 main.title("Testing...")
-
 # Size
 main.geometry("350x200")
+
+
+# Menu bar
+menu = Menu(main)
+item = Menu(menu)
+item.add_command(label='New')
+menu.add_cascade(label='File', menu=item)
+main.config(menu=menu)
 
 # Labels
 lbl = Label(main, text = "Welcome!")
