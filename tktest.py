@@ -13,10 +13,13 @@ main.geometry("350x200")
 lbl = Label(main, text = "Welcome!")
 lbl.grid()
 
+# Input field
+txt = Entry(main)
+txt.grid(column = 1, row = 0)
+
 # function
 def clicked():
-    lbl.configure(text = "Thanks for clicking :)")
-
+    lbl.configure(text = txt.get())
 # button
 btn = Button(main, text = "Click", command = clicked)
 
