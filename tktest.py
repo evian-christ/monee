@@ -1,28 +1,27 @@
-from tkinter import ttk
+from tkinter.ttk import *
 from ttkthemes import ThemedTk
 
 # main window
 main = ThemedTk(theme='yaru')
-print(main.get_themes())
 
 # Title
-main.title("Testing...")
+main.title("monee v0.0.1")
 # Size
-main.geometry("350x200")
+main.geometry("1080x720")
 
 # Labels
-lbl = ttk.Label(main, text = "Welcome!")
+lbl = Label(main, text = "Welcome!")
 lbl.grid()
 
 # Input field
-txt = ttk.Entry(main)
+txt = Entry(main)
 txt.grid(column = 1, row = 0)
 
 # function
 def clicked():
     lbl.configure(text = txt.get())
 # button
-btn = ttk.Button(main, text = "Click", command = clicked)
+btn = Button(main, text = "Click", command = clicked)
 
 # set button grid
 btn.grid(column = 0, row = 1)
