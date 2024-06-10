@@ -1,5 +1,6 @@
 from tkinter.ttk import *
 from ttkthemes import ThemedTk
+from dateAndTime import *
 
 # main window
 main = ThemedTk(theme='yaru')
@@ -10,7 +11,7 @@ main.title("monee v0.0.1")
 main.geometry("1080x720")
 
 # Labels
-lbl = Label(main, text = "Welcome!")
+lbl = Label(main, text = today)
 lbl.grid()
 
 # Input field
