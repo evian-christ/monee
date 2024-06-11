@@ -17,7 +17,7 @@ tday.grid()
 
 # function
 def clicked():
-    # clicked
+    pass
 
 # button
 btn_add = Button(main, text = "Add", command = clicked)
