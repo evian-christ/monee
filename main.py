@@ -6,13 +6,17 @@ from dateAndTime import *
 main = ThemedTk(theme='yaru')
 main.grid_columnconfigure(0, weight=1)
 
+#------------------STYLE--------------------
+s = Style()
+s.configure('main.TButton', font = ('Consolas', 20))
+
 # Title
 main.title("monee v0.0.1")
 # Size
 main.geometry("1080x720")
 
 # Date
-tday = Label(main, text = today)
+tday = Label(main, text = today, font=('Consolas', 20))
 tday.grid()
 
 # function
@@ -20,9 +24,9 @@ def clicked():
     pass
 
 # button
-btn_add = Button(main, text = "Add", command = clicked)
-btn_view = Button(main, text = "View", command = clicked)
-btn_settings = Button(main, text = "Settings", command = clicked)
+btn_add = Button(main, text = "Add", style = 'main.TButton', command = clicked)
+btn_view = Button(main, text = "View", style = 'main.TButton', command = clicked)
+btn_settings = Button(main, text = "Settings", style = 'main.TButton', command = clicked)
 
 # set button grid
 btn_add.grid(column = 0, row = 2)
