@@ -16,7 +16,7 @@ main.title("monee v0.0.1")
 main.geometry("1080x720")
 
 # Date
-tday = Label(main, text = today, font=('Consolas', 20))
+tday = Label(main, text = today, font=('Consolas', 20), padding=20)
 tday.grid()
 
 # function
@@ -24,7 +24,7 @@ def clicked():
     pass
 
 # button
-btn_add = Button(main, text = "Add", style = 'main.TButton', command = clicked)
+btn_add = Button(main, text = "Add", style = 'main.TButton', padding=20, command = clicked)
 btn_view = Button(main, text = "View", style = 'main.TButton', command = clicked)
 btn_settings = Button(main, text = "Settings", style = 'main.TButton', command = clicked)
 
