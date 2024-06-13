@@ -17,7 +17,7 @@ main.geometry("1080x720")
 
 # Date
 tday = Label(main, text = today, font=('Consolas', 20), padding=20)
-tday.grid()
+tday.grid(pady = 70, sticky='n')
 
 # function
 def clicked():
