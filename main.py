@@ -36,7 +36,7 @@ def open_view():
 
 #------------------button--------------------
 btn_add = Button(main, text = "Add", style = 'main.TButton', padding=20, command = open_add)
-btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = open_add)
+btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = open_view)
 btn_settings = Button(main, text = "Settings", style = 'main.TButton', padding=10, command = open_add)
 
 #--------------set button grid---------------
