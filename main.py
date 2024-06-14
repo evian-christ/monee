@@ -20,13 +20,17 @@ tday = Label(main, text = today, font=('Consolas', 20), padding=20)
 tday.grid(pady = 70, sticky='n')
 
 #-----------------function------------------
-def clicked():
-    pass
+def open_add():
+    addWindow = ThemedTk(theme='yaru')
+
+    addWindow.title("Add New Entry")
+
+    addWindow.geometry("720x360")
 
 #------------------button--------------------
-btn_add = Button(main, text = "Add", style = 'main.TButton', padding=20, command = clicked)
-btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = clicked)
-btn_settings = Button(main, text = "Settings", style = 'main.TButton', padding=10, command = clicked)
+btn_add = Button(main, text = "Add", style = 'main.TButton', padding=20, command = open_add)
+btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = open_add)
+btn_settings = Button(main, text = "Settings", style = 'main.TButton', padding=10, command = open_add)
 
 #--------------set button grid---------------
 btn_add.grid(column = 0, row = 2, pady = 20)
