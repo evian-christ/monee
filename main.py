@@ -27,6 +27,13 @@ def open_add():
 
     addWindow.geometry("720x360")
 
+def open_view():
+    viewWindow = ThemedTk(theme='yaru')
+
+    viewWindow.title("View history")
+
+    viewWindow.geometry("1080x720")
+
 #------------------button--------------------
 btn_add = Button(main, text = "Add", style = 'main.TButton', padding=20, command = open_add)
 btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = open_add)
