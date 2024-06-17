@@ -4,7 +4,7 @@ import sqlite3
 db = sqlite3.connect('data.db')
 
 db.execute('''
-CREATE TABLE expenses
+CREATE TABLE if not exists expenses
            (
            id INTEGER,
            date INTEGER,
