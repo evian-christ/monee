@@ -18,6 +18,11 @@ CREATE TABLE if not exists expenses
 date = datetime.date(2024, 6, 15)
 desc = "McDonalds"
 
-db.execute("INSERT INTO expenses (date, desc) VALUES (?, ?)",(time.mktime(date.timetuple()), desc)) 
+db.execute("INSERT INTO expenses (date, desc) VALUES (?, ?)",(time.mktime(date.timetuple()), desc))
+
+entries = db.execute("SELECT * from expenses")
+
+for row in entries:
+    print(row)
 
 db.commit()
