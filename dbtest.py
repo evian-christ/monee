@@ -18,11 +18,13 @@ CREATE TABLE if not exists expenses
 date = datetime.date(2024, 6, 15)
 desc = "McDonalds"
 
-db.execute("INSERT INTO expenses (date, desc) VALUES (?, ?)",(time.mktime(date.timetuple()), desc))
+#db.execute("INSERT INTO expenses (date, desc) VALUES (?, ?)",(time.mktime(date.timetuple()), desc))
 
 entries = db.execute("SELECT * from expenses")
 
+#db.execute("DELETE FROM expenses WHERE id=3")
+
 for row in entries:
-    print(row)
+    print(datetime.datetime.fromtimestamp(row[1]).date())
 
 db.commit()
