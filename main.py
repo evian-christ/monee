@@ -22,6 +22,7 @@ CREATE TABLE if not exists expenses
             )
 ''')
 
+'''
 date = time.mktime(datetime.datetime.now().timetuple())
 name = "Lunch"
 cost = 3.40
@@ -34,6 +35,7 @@ dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
             (date, name, cost, rate, desc, category, remark))
 
 dbc.commit()
+'''
 
 #----------------main window----------------
 main = ThemedTk(theme='yaru')
@@ -58,7 +60,15 @@ def open_add():
 
     addWindow.title("Add New Entry")
 
-    addWindow.geometry("720x360")
+    addWindow.geometry("360x720")
+
+    l_date = Label(addWindow, text = "Date: ", font=('Consolas', 10))
+    l_date.grid(column = 0, row = 0)
+
+    en_date = Entry(addWindow)
+    en_date.grid(column = 1, row = 0, columnspan = 3)
+
+
 
 def open_view():
     viewWindow = ThemedTk(theme='yaru')
