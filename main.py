@@ -1,6 +1,39 @@
 from tkinter.ttk import *
 from ttkthemes import ThemedTk
 from dateAndTime import *
+import time
+
+import sqlite3
+
+#-------------------DB---------------------
+dbc = sqlite3.connect('data.db')
+
+dbc.execute('''
+CREATE TABLE if not exists expenses
+            (
+            id INTEGER PRIMARY KEY,
+            date INTEGER,
+            name VARCHAR(32),
+            cost REAL,
+            rate INTEGER,
+            desc VARCHAR(255),
+            category VARCHAR(32),
+            remark VARCHAR(255)
+            )
+''')
+
+date = time.mktime(datetime.datetime.now().timetuple())
+name = "Lunch"
+cost = 3.40
+rate = 5
+desc = "Tesco Meal Deal"
+category = "Food"
+remark = ""
+
+dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
+            (date, name, cost, rate, desc, category, remark))
+
+dbc.commit()
 
 #----------------main window----------------
 main = ThemedTk(theme='yaru')
