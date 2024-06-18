@@ -57,16 +57,17 @@ tday.grid(pady=7, sticky='n')
 #-----------------function------------------
 def open_add():
     addWindow = ThemedTk(theme='yaru')
-
+    addWindow.grid_columnconfigure(1, weight=3)
+    addWindow.grid_rowconfigure(0, pad=20)
     addWindow.title("Add New Entry")
 
     addWindow.geometry("360x720")
 
     l_date = Label(addWindow, text = "Date: ", font=('Consolas', 10))
-    l_date.grid(column = 0, row = 0)
+    l_date.grid(column = 0, row = 0, padx=10)
 
     en_date = Entry(addWindow)
-    en_date.grid(column = 1, row = 0, columnspan = 3)
+    en_date.grid(column = 1, row = 0, columnspan = 3, sticky='w')
 
 
 
