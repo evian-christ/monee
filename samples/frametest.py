@@ -1,8 +1,8 @@
 
+from tkinter import *
 from tkinter.ttk import *
-from ttkthemes import ThemedTk
 
-root = ThemedTk(theme='yaru')
+root = Tk()
 
 content = Frame(root)
 frame = Frame(content, borderwidth=5, relief="ridge", width=200, height=100)
