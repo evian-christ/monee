@@ -1,5 +1,5 @@
+from tkinter import *
 from tkinter.ttk import *
-from ttkthemes import ThemedTk
 from dateAndTime import *
 import time
 
@@ -57,19 +57,36 @@ tday.grid(pady=7, sticky='n')
 #-----------------function------------------
 def open_add():
     addWindow = ThemedTk(theme='yaru')
+    addFrame = Frame(addWindow)
     addWindow.grid_columnconfigure(1, weight=3)
     addWindow.grid_rowconfigure(0, pad=20)
     addWindow.title("Add New Entry")
 
     addWindow.geometry("360x720")
 
-    l_date = Label(addWindow, text = "Date: ", font=('Consolas', 10))
+    #Date
+    l_date = Label(addFrame, text = "Date: ", font=('Consolas', 10))
     l_date.grid(column = 0, row = 0, padx=10)
-
-    en_date = Entry(addWindow)
+    en_date = Entry(addFrame)
     en_date.grid(column = 1, row = 0, columnspan = 3, sticky='w')
 
+    #Name
+    l_name = Label(addFrame, text = "Name: ", font=('Consolas', 10))
+    l_name.grid(column = 0, row = 1, padx=10)
+    en_name = Entry(addFrame)
+    en_name.grid(column = 1, row = 1, columnspan = 3, sticky='w')
 
+    #Cost
+    l_cost = Label(addFrame, text = "Cost: ", font=('Consolas', 10))
+    l_cost.grid(column = 0, row = 2, padx=10)
+    en_cost = Entry(addFrame)
+    en_cost.grid(column = 1, row = 2)
+
+    #Rating
+    l_rating = Label(addFrame, text = "Rating: ", font=('Consolas', 10))
+    l_rating.grid(column = 2, row = 2, padx=10)
+    en_rating = Entry(addFrame)
+    en_rating.grid(column = 3, row = 2)
 
 def open_view():
     viewWindow = ThemedTk(theme='yaru')
