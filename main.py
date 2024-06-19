@@ -43,7 +43,7 @@ main.grid_columnconfigure(0, weight=1)
 
 #------------------STYLE--------------------
 s = Style()
-s.configure('main.TButton', font = ('Consolas', 20))
+s.configure('main.TButton')
 
 #------------------Title--------------------
 main.title("monee v0.0.1")
@@ -51,7 +51,7 @@ main.title("monee v0.0.1")
 main.geometry("250x305")
 
 #-------------------Date--------------------
-tday = Label(main, text = today, font=('Consolas', 20))
+tday = Label(main, text = today)
 tday.grid(pady=7, sticky='n')
 
 #------------------button--------------------
