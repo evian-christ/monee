@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import *
 from dateAndTime import *
 import time
@@ -7,24 +8,31 @@ import sqlite3
 
 def open_add():
     def on_submit():
-        date_value = date.get()
-        name_value = name.get()
-        ctgr_value = ctgr.get()
-        cost_value = cost.get()
-        rate_value = rate.get()
-        desc_value = desc.get("1.0", END).strip()
-        rmrk_value = rmrk.get("1.0", END).strip()
+        try:
+            date_value = date.get()
+            name_value = name.get()
+            ctgr_value = ctgr.get()
+            cost_value = cost.get()
+            rate_value = rate.get()
+            desc_value = desc.get("1.0", END).strip()
+            rmrk_value = rmrk.get("1.0", END).strip()
 
-        date_value = time.mktime(datetime.datetime.strptime(date_value, "%d-%m-%Y").timetuple())
+            date_value = time.mktime(datetime.datetime.strptime(date_value, "%d-%m-%Y").timetuple())
 
-        dbc = sqlite3.connect('data.db')
+            dbc = sqlite3.connect('data.db')
 
-        dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
-                    (date_value, name_value, cost_value, rate_value,
-                     desc_value, ctgr_value, rmrk_value))
+            dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
+                        (date_value, name_value, cost_value, rate_value,
+                        desc_value, ctgr_value, rmrk_value))
+            
+            dbc.commit()
+            dbc.close()
+
+            root.destroy()
+            print("added succesfully!")
         
-        dbc.commit()
-
+        except Exception as e:
+            messagebox.showerror("Error", e)
 
     root = Tk()
 
