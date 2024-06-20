@@ -22,21 +22,6 @@ CREATE TABLE if not exists expenses
             )
 ''')
 
-'''
-date = time.mktime(datetime.datetime.now().timetuple())
-name = "Lunch"
-cost = 3.40
-rate = 5
-desc = "Tesco Meal Deal"
-category = "Food"
-remark = ""
-
-dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
-            (date, name, cost, rate, desc, category, remark))
-
-dbc.commit()
-'''
-
 #----------------main window----------------
 main = Tk()
 main.grid_columnconfigure(0, weight=1)
