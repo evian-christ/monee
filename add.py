@@ -48,11 +48,20 @@ def open_add():
     namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
     name = Entry(frame)
     ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
-    ctgr = Entry(frame)
+    ctgr = Combobox(
+        frame,
+        state="readonly",
+        values=["Food", "Entertainment", "Transport", "Misc"]
+    )
     costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
-    cost = Entry(frame, width=8, justify=RIGHT)
+    cost = Entry(frame, width=6, justify=RIGHT)
     ratelb = Label(frame, text = "Rating:", font=('Consolas', 10))
-    rate = Entry(frame, width=3, justify=CENTER)
+    rate = Combobox(
+        frame,
+        width=2,
+        state="readonly",
+        values=[5,4,3,2,1]
+    )
     desclb = Label(frame, text = "Desc: ", font=('Consolas', 10))
     desc = Text(frame, height=5, width=10)
     rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
