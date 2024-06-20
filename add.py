@@ -6,6 +6,7 @@ def open_add():
 
     root.title("Add New Entry")
     root.geometry("260x380")
+    root.resizable(0, 0)
 
     frame = Frame(root)
     
@@ -27,8 +28,8 @@ def open_add():
 
     frame.grid(column=0, row=0, sticky='n')
 
-    datelb.grid(column=0, row=0, padx=10, pady=10, sticky='w')
-    date.grid(column=1, row=0, columnspan=3, sticky='we')
+    datelb.grid(column=0, row=0, padx=10, pady=(13, 10), sticky='w')
+    date.grid(column=1, row=0, columnspan=3, pady=(13, 10), sticky='we')
     namelb.grid(column=0, row=1, padx=10, pady=10, sticky='w')
     name.grid(column=1, row=1, columnspan=3, sticky='we')
     ctgrlb.grid(column=0, row=2, padx=10, pady=10, sticky='w')
