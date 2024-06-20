@@ -1,7 +1,27 @@
 from tkinter import *
 from tkinter.ttk import *
 
+import sqlite3
+
 def open_add():
+    def on_submit():
+        date_value = date.get()
+        name_value = name.get()
+        ctgr_value = ctgr.get()
+        cost_value = cost.get()
+        rate_value = rate.get()
+        desc_value = desc.get()
+        rmrk_value = rmrk.get()
+
+        dbc = sqlite3.connect('data.db')
+
+        dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
+                    (date_value, name_value, cost_value, rate_value,
+                     desc_value, ctgr_value, rmrk_value))
+        
+        dbc.commit()
+
+
     root = Tk()
 
     root.title("Add New Entry")
@@ -24,7 +44,7 @@ def open_add():
     desc = Text(frame, height=5, width=10)
     rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
-    addbtn = Button(frame, text="Add")
+    addbtn = Button(frame, text="Add", command=on_submit)
 
     frame.grid(column=0, row=0, sticky='n')
 
