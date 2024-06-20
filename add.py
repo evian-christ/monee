@@ -35,7 +35,7 @@ def open_add():
     root = Tk()
 
     root.title("Add New Entry")
-    root.geometry("260x380")
+    root.geometry("260x380+900+350")
     root.resizable(0, 0)
 
     frame = Frame(root)

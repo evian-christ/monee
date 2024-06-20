@@ -5,7 +5,6 @@ from add import open_add
 
 import sqlite3
 
-#-------------------DB---------------------
 dbc = sqlite3.connect('data.db')
 
 dbc.execute('''
@@ -22,32 +21,25 @@ CREATE TABLE if not exists expenses
             )
 ''')
 
-#----------------main window----------------
+#=====================================
+
 main = Tk()
 main.grid_columnconfigure(0, weight=1)
 
-#------------------STYLE--------------------
-s = Style()
-s.configure('main.TButton')
-
-#------------------Title--------------------
 main.title("monee v0.0.1")
-#-------------------Size--------------------
-main.geometry("250x305")
+main.geometry("250x305+900+400")
 
-#-------------------Date--------------------
+#=====================================
+
 tday = Label(main, text = today)
 tday.grid(pady=7, sticky='n')
 
-#------------------button--------------------
-btn_add = Button(main, text = "Add", style = 'main.TButton', padding=10, command = open_add)
-btn_view = Button(main, text = "View", style = 'main.TButton', padding=10, command = open_add)
-btn_settings = Button(main, text = "Settings", style = 'main.TButton', padding=10, command = open_add)
+btn_add = Button(main, text = "Add", padding=10, command = open_add)
+btn_view = Button(main, text = "View", padding=10, command = open_add)
+btn_settings = Button(main, text = "Settings", padding=10, command = open_add)
 
-#--------------set button grid---------------
 btn_add.grid(column = 0, row = 2, pady = 10)
 btn_view.grid(column = 0, row = 3, pady = 10)
 btn_settings.grid(column = 0, row = 4, pady = 10)
 
-#---------------Execute TkInter--------------
 main.mainloop()
