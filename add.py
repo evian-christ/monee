@@ -9,15 +9,13 @@ import sqlite3
 def open_add():
     def on_submit():
         try:
-            date_value = date.get()
+            date_value = strToUnix(date.get())
             name_value = name.get()
             ctgr_value = ctgr.get()
             cost_value = cost.get()
             rate_value = rate.get()
             desc_value = desc.get("1.0", END).strip()
             rmrk_value = rmrk.get("1.0", END).strip()
-
-            date_value = time.mktime(datetime.datetime.strptime(date_value, "%d-%m-%Y").timetuple())
 
             dbc = sqlite3.connect('data.db')
 
@@ -44,7 +42,7 @@ def open_add():
     
     datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
     date = Entry(frame)
-    date.insert(0, datetime.datetime.now().strftime("%d-%m-%Y"))
+    date.insert(0, today)
     namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
     name = Entry(frame)
     ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
