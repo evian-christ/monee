@@ -44,6 +44,7 @@ def open_add():
     
     datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
     date = Entry(frame)
+    date.insert(0, datetime.datetime.now().strftime("%d-%m-%Y"))
     namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
     name = Entry(frame)
     ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
