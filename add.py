@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
+from dateAndTime import *
+import time
 
 import sqlite3
 
@@ -10,8 +12,10 @@ def open_add():
         ctgr_value = ctgr.get()
         cost_value = cost.get()
         rate_value = rate.get()
-        desc_value = desc.get()
-        rmrk_value = rmrk.get()
+        desc_value = desc.get("1.0", END).strip()
+        rmrk_value = rmrk.get("1.0", END).strip()
+
+        date_value = time.mktime(datetime.datetime.strptime(date_value, "%d-%m-%Y").timetuple())
 
         dbc = sqlite3.connect('data.db')
 
