@@ -15,13 +15,13 @@ def open_view():
                      ("Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
                      show="headings")
 
-    table.column("Date", width=10)
-    table.column("Name", width=10)
+    table.column("Date", width=1)
+    table.column("Name", width=1)
     table.column("Category", width=10)
-    table.column("Cost", width=10)
-    table.column("Rating", width=10)
-    table.column("Description", width=10)
-    table.column("Remark", width=10)
+    table.column("Cost", width=1)
+    table.column("Rating", width=1)
+    table.column("Description")
+    table.column("Remark")
 
     table.heading("Date", text="Date")
     table.heading("Name", text="Name")
@@ -35,6 +35,8 @@ def open_view():
     root.columnconfigure(0, weight=1)
     frame.columnconfigure(0, weight=1)
     frame.columnconfigure(1, weight=1)
+    root.rowconfigure(0, weight=1)
+    frame.rowconfigure(1, weight=1)
 
     advbtn.grid(column=1, row=0, sticky='e')
     table.grid(column=0, row=1, columnspan=2, sticky='nswe')
