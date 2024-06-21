@@ -11,6 +11,8 @@ def open_view():
     frame = Frame(root, padding=15)
 
     advbtn = Button(frame, text="Advanced")
+    delbtn = Button(frame, text="Delete")
+    editbtn = Button(frame, text="Edit")
     table = Treeview(frame, columns=
                      ("Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
                      show="headings")
@@ -39,6 +41,8 @@ def open_view():
     frame.rowconfigure(1, weight=1)
 
     advbtn.grid(column=1, row=0, sticky='e')
-    table.grid(column=0, row=1, columnspan=2, sticky='nswe')
+    delbtn.grid(column=0, row=2, sticky='w')
+    editbtn.grid(column=1, row=2, sticky='e')
+    table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
 
     root.mainloop()
