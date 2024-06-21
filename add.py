@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
 from dateAndTime import *
-import time
 
 import sqlite3
 

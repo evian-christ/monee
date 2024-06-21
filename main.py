@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from dateAndTime import *
 from add import open_add
+from view import open_view
 
 import sqlite3
 
@@ -35,7 +36,7 @@ tday = Label(main, text = today)
 tday.grid(pady=7, sticky='n')
 
 btn_add = Button(main, text = "Add", padding=10, command = open_add)
-btn_view = Button(main, text = "View", padding=10, command = open_add)
+btn_view = Button(main, text = "View", padding=10, command = open_view)
 btn_settings = Button(main, text = "Settings", padding=10, command = open_add)
 
 btn_add.grid(column = 0, row = 2, pady = 10)
