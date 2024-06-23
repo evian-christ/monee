@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
+from dateAndTime import *
 import sqlite3
 
 def open_view():
@@ -54,6 +55,7 @@ def open_view():
     table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
 
     for row in rows:
-        table.insert("", "end", values=row)
+        date_str = unixToStr(row[0])
+        table.insert("", "end", values=(date_str, row[1], row[2], row[3], row[4], row[5], row[6]))
 
     root.mainloop()

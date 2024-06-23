@@ -7,4 +7,4 @@ def strToUnix(s):
     return time.mktime(datetime.datetime.strptime(s, "%d-%m-%Y").timetuple())
 
 def unixToStr(u):
-    return datetime.datetime.fromtimestamp(u).strftime("%d-%m-%Y")
+    return datetime.datetime.fromtimestamp(int(u)).strftime("%d-%m-%Y")
