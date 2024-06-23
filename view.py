@@ -3,6 +3,14 @@ from tkinter.ttk import *
 import sqlite3
 
 def open_view():
+    dbc = sqlite3.connect('data.db')
+    cursor = dbc.cursor()
+
+    cursor.execute("SELECT * FROM expenses")
+    rows = cursor.fetchall()
+
+    dbc.close()
+
     root = Tk()
 
     root.title("View your entries")
@@ -44,5 +52,8 @@ def open_view():
     delbtn.grid(column=0, row=2, sticky='w')
     editbtn.grid(column=1, row=2, sticky='e')
     table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
+
+    for row in rows:
+        table.insert("", "end", values=row)
 
     root.mainloop()
