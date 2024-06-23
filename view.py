@@ -6,7 +6,7 @@ def open_view():
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
 
-    cursor.execute("SELECT * FROM expenses")
+    cursor.execute("SELECT date, name, category, cost, rate, desc, remark FROM expenses")
     rows = cursor.fetchall()
 
     dbc.close()
