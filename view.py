@@ -20,6 +20,10 @@ def delete_selected_row():
     item = selected_item[0]
     entry_id = table.set(item, 'ID')  # Get the hidden ID
 
+    confirm = messagebox.askyesno("Delete", "You sure bro?")
+    if not confirm:
+        return
+
     # Connect to the database
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
