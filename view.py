@@ -59,8 +59,8 @@ def open_view():
     table.column("Date", width=100)
     table.column("Name", width=100)
     table.column("Category", width=100)
-    table.column("Cost", width=100)
-    table.column("Rating", width=20)
+    table.column("Cost", width=50, anchor=E)
+    table.column("Rating", width=25, anchor=CENTER)
     table.column("Description", width=200)
     table.column("Remark", width=200)
 
