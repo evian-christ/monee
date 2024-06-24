@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 from dateAndTime import *
+from tkinter import messagebox
 import sqlite3
 
 def fetch_data():
@@ -30,6 +31,31 @@ def delete_selected_row():
     table.delete(item)
 
 def edit_selected_row():
+    def on_submit():
+        try:
+            date_value = strToUnix(date.get())
+            name_value = name.get()
+            ctgr_value = ctgr.get()
+            cost_value = cost.get()
+            rate_value = rate.get()
+            desc_value = desc.get("1.0", END).strip()
+            rmrk_value = rmrk.get("1.0", END).strip()
+
+            dbc = sqlite3.connect('data.db')
+
+            dbc.execute("UPDATE expenses SET date=?, name=?, category=?, cost=?, rate=?, desc=?, remark=? WHERE id=?",
+                        (date_value, name_value, ctgr_value, cost_value,
+                        rate_value, desc_value, rmrk_value, entry_id))
+            
+            dbc.commit()
+            dbc.close()
+
+            root.destroy()
+            print("edited succesfully!")
+        
+        except Exception as e:
+            messagebox.showerror("Error", e)
+    
     selected_item = table.selection()
     if not selected_item:
         return
@@ -42,9 +68,8 @@ def edit_selected_row():
     cursor = dbc.cursor()
     cursor.execute("SELECT * FROM expenses WHERE id=?", (entry_id,))
     dbc.commit()
-    #dbc.close()
-
     entry = cursor.fetchone()
+    dbc.close()
 
     root = Tk()
 
@@ -84,7 +109,7 @@ def edit_selected_row():
     rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
     rmrk.insert("1.0", entry[7])
-    addbtn = Button(frame, text="Add")
+    editbtn = Button(frame, text="Save", command=on_submit)
 
     frame.grid(column=0, row=0, sticky='n')
 
@@ -102,7 +127,7 @@ def edit_selected_row():
     desc.grid(column=1, row=4, columnspan=3, rowspan=2, pady=10, sticky='we')
     rmrklb.grid(column=0, row=6, padx=10, pady=10, sticky='nw')
     rmrk.grid(column=1, row=6, columnspan=3, rowspan=2, pady=10, sticky='we')
-    addbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
+    editbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
 
 def open_view():
     global table
