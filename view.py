@@ -34,6 +34,19 @@ def edit_selected_row():
     if not selected_item:
         return
     
+    item = selected_item[0]
+    entry_id = table.set(item, 'ID')  # Get the hidden ID
+
+    # Connect to the database
+    dbc = sqlite3.connect('data.db')
+    cursor = dbc.cursor()
+    cursor.execute("SELECT * FROM expenses WHERE id=?", (entry_id,))
+    dbc.commit()
+    #dbc.close()
+
+    entry = cursor.fetchone()
+    print(entry)
+
     root = Tk()
 
     root.title("Edit " + str(selected_item[0]))
@@ -44,8 +57,10 @@ def edit_selected_row():
     
     datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
     date = Entry(frame)
+    date.insert(0, entry[1])
     namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
     name = Entry(frame)
+    name.insert(0, entry[2])
     ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
     ctgr = Combobox(
         frame,
@@ -65,7 +80,7 @@ def edit_selected_row():
     desc = Text(frame, height=5, width=10)
     rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
-    addbtn = Button(frame, text="Add", command=on_submit)
+    addbtn = Button(frame, text="Add")
 
     frame.grid(column=0, row=0, sticky='n')
 
