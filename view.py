@@ -50,6 +50,12 @@ def edit_selected_row():
             dbc.commit()
             dbc.close()
 
+            selected_item = table.selection()
+            if selected_item:
+                item = selected_item[0]
+                table.item(item, values=(entry_id, unixToStr(date_value), name_value, ctgr_value,
+                                         cost_value, rate_value, desc_value, rmrk_value))
+
             root.destroy()
             print("edited succesfully!")
         
