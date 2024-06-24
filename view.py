@@ -1,39 +1,70 @@
 from tkinter import *
 from tkinter.ttk import *
-from dateAndTime import *
+from dateAndTime import unixToStr
 import sqlite3
 
-def open_view():
+def fetch_data():
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
-
-    cursor.execute("SELECT date, name, category, cost, rate, desc, remark FROM expenses")
+    cursor.execute("SELECT id, date, name, category, cost, rate, desc, remark FROM expenses")
     rows = cursor.fetchall()
+    dbc.close()
+    return rows
 
+def delete_selected_row():
+    selected_item = table.selection()
+    if not selected_item:
+        return
+
+    item = selected_item[0]
+    entry_id = table.set(item, 'ID')  # Get the hidden ID
+
+    # Connect to the database
+    dbc = sqlite3.connect('data.db')
+    cursor = dbc.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id=?", (entry_id,))
+    dbc.commit()
     dbc.close()
 
-    root = Tk()
+    # Remove from Treeview
+    table.delete(item)
 
+def open_view():
+    global table
+    root = Tk()
     root.title("View your entries")
     root.geometry("1000x700+300+200")
 
     frame = Frame(root, padding=15)
+    frame.grid(column=0, row=0, sticky="nsew")
+    root.columnconfigure(0, weight=1)
+    frame.columnconfigure(0, weight=1)
+    frame.columnconfigure(1, weight=1)
+    root.rowconfigure(0, weight=1)
+    frame.rowconfigure(1, weight=1)
 
     advbtn = Button(frame, text="Advanced")
-    delbtn = Button(frame, text="Delete")
+    delbtn = Button(frame, text="Delete", command=delete_selected_row)
     editbtn = Button(frame, text="Edit")
+    advbtn.grid(column=1, row=0, sticky='e')
+    delbtn.grid(column=0, row=2, sticky='w')
+    editbtn.grid(column=1, row=2, sticky='e')
+
     table = Treeview(frame, columns=
-                     ("Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
+                     ("ID", "Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
                      show="headings")
+    table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
 
-    table.column("Date", width=1)
-    table.column("Name", width=1)
-    table.column("Category", width=10)
-    table.column("Cost", width=1)
-    table.column("Rating", width=1)
-    table.column("Description")
-    table.column("Remark")
+    table.column("ID", width=0, stretch=NO)  # Hide the ID column
+    table.column("Date", width=100)
+    table.column("Name", width=100)
+    table.column("Category", width=100)
+    table.column("Cost", width=100)
+    table.column("Rating", width=20)
+    table.column("Description", width=200)
+    table.column("Remark", width=200)
 
+    table.heading("ID", text="ID")
     table.heading("Date", text="Date")
     table.heading("Name", text="Name")
     table.heading("Category", text="Category")
@@ -42,20 +73,10 @@ def open_view():
     table.heading("Description", text="Description")
     table.heading("Remark", text="Remark")
 
-    frame.grid(column=0, row=0, sticky="nsew")  # Expand frame within root
-    root.columnconfigure(0, weight=1)
-    frame.columnconfigure(0, weight=1)
-    frame.columnconfigure(1, weight=1)
-    root.rowconfigure(0, weight=1)
-    frame.rowconfigure(1, weight=1)
-
-    advbtn.grid(column=1, row=0, sticky='e')
-    delbtn.grid(column=0, row=2, sticky='w')
-    editbtn.grid(column=1, row=2, sticky='e')
-    table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
-
+    rows = fetch_data()
     for row in rows:
-        date_str = unixToStr(row[0])
-        table.insert("", "end", values=(date_str, row[1], row[2], row[3], row[4], row[5], row[6]))
+        date_str = unixToStr(row[1])  # Convert Unix timestamp to readable date string
+        # Insert data into the Treeview, including the hidden ID
+        table.insert("", "end", values=(row[0], date_str, row[2], row[3], row[4], row[5], row[6], row[7]))
 
     root.mainloop()
