@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from dateAndTime import unixToStr
+from dateAndTime import *
 import sqlite3
 
 def fetch_data():
@@ -45,11 +45,10 @@ def edit_selected_row():
     #dbc.close()
 
     entry = cursor.fetchone()
-    print(entry)
 
     root = Tk()
 
-    root.title("Edit " + str(selected_item[0]))
+    root.title("Edit " + str(entry[0]))
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
 
@@ -57,7 +56,7 @@ def edit_selected_row():
     
     datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
     date = Entry(frame)
-    date.insert(0, entry[1])
+    date.insert(0, unixToStr(entry[1]))
     namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
     name = Entry(frame)
     name.insert(0, entry[2])
@@ -67,8 +66,10 @@ def edit_selected_row():
         state="readonly",
         values=["Food", "Entertainment", "Transport", "Misc"]
     )
+    ctgr.set(entry[6])
     costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
     cost = Entry(frame, width=6, justify=RIGHT)
+    cost.insert(0, entry[3])
     ratelb = Label(frame, text = "Rating:", font=('Consolas', 10))
     rate = Combobox(
         frame,
@@ -76,10 +77,13 @@ def edit_selected_row():
         state="readonly",
         values=[5,4,3,2,1]
     )
+    rate.set(entry[4])
     desclb = Label(frame, text = "Desc: ", font=('Consolas', 10))
     desc = Text(frame, height=5, width=10)
+    desc.insert("1.0", entry[5])
     rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
+    rmrk.insert("1.0", entry[7])
     addbtn = Button(frame, text="Add")
 
     frame.grid(column=0, row=0, sticky='n')
