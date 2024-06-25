@@ -5,6 +5,14 @@ from add import open_add
 from view import open_view
 
 import sqlite3
+import json
+import os
+
+default_settings = {
+    "month_start_date": "1",
+    "category": ["Food", "Entertainment", "Transport", "Misc"],
+    "Budget": ["550", "150", "100", "100"]
+}
 
 dbc = sqlite3.connect('data.db')
 
