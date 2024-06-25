@@ -8,7 +8,7 @@ import sqlite3
 import json
 import os
 
-default_settings = {
+settings = {
     "month_start_date": "1",
     "category": ["Food", "Entertainment", "Transport", "Misc"],
     "Budget": ["550", "150", "100", "100"]
@@ -16,7 +16,10 @@ default_settings = {
 
 if not os.path.exists('config.json'):
     with open('config.json', 'w') as config_file:
-        json.dump(default_settings, config_file)
+        json.dump(settings, config_file)
+else:
+    with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
 
 dbc = sqlite3.connect('data.db')
 
