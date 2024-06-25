@@ -14,6 +14,10 @@ default_settings = {
     "Budget": ["550", "150", "100", "100"]
 }
 
+if not os.path.exists('config.json'):
+    with open('config.json', 'w') as config_file:
+        json.dump(default_settings, config_file)
+
 dbc = sqlite3.connect('data.db')
 
 dbc.execute('''
