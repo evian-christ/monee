@@ -3,10 +3,13 @@ from tkinter.ttk import *
 from dateAndTime import *
 from add import open_add
 from view import open_view
+from settings import open_settings
 
 import sqlite3
 import json
 import os
+
+#=====================================
 
 settings = {
     "month_start_date": "1",
@@ -20,6 +23,8 @@ if not os.path.exists('config.json'):
 else:
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
+
+#=====================================
 
 dbc = sqlite3.connect('data.db')
 
@@ -52,7 +57,7 @@ tday.grid(pady=7, sticky='n')
 
 btn_add = Button(main, text = "Add", padding=10, command = open_add)
 btn_view = Button(main, text = "View", padding=10, command = open_view)
-btn_settings = Button(main, text = "Settings", padding=10, command = open_add)
+btn_settings = Button(main, text = "Settings", padding=10, command = open_settings)
 
 btn_add.grid(column = 0, row = 2, pady = 10)
 btn_view.grid(column = 0, row = 3, pady = 10)
