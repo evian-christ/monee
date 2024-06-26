@@ -6,25 +6,6 @@ from view import open_view
 from settings import open_settings
 
 import sqlite3
-import json
-import os
-
-#=====================================
-
-settings = {
-    "month_start_date": "1",
-    "category": ["Food", "Entertainment", "Transport", "Misc"],
-    "Budget": ["550", "150", "100", "100"]
-}
-
-if not os.path.exists('config.json'):
-    with open('config.json', 'w') as config_file:
-        json.dump(settings, config_file)
-else:
-    with open('config.json', 'r') as config_file:
-        settings = json.load(config_file)
-
-#=====================================
 
 dbc = sqlite3.connect('data.db')
 
