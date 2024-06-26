@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 from dateAndTime import *
+from tkinter import messagebox
 
 import json
 import os
@@ -26,13 +27,14 @@ def add_category():
     def add():
         category_value = category_entry.get()
         if category_value in settings['category']:
-            # error
+            messagebox.showerror("Error", "Already exists!", parent=add_window)
             pass
         else:
             category_listbox.insert(END, category_value)
             settings['category'].append(category_value)
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
+            add_window.destroy()
 
     add_window = Tk()
 
