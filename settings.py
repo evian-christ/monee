@@ -22,7 +22,32 @@ else:
 
 #=====================================
 
+def add_category():
+    def add():
+        category_value = category_entry.get()
+        if category_value in settings['category']:
+            # error
+            pass
+        else:
+            category_listbox.insert(END, category_value)
+            settings['category'].append(category_value)
+            with open('config.json', 'w') as config_file:
+                json.dump(settings, config_file)
+
+    add_window = Tk()
+
+    add_window.title("Add new category")
+    add_window.geometry("260x65+1000+500")
+
+    category_entry = Entry(add_window)
+    category_add = Button(add_window, text="Add", command=add)
+
+    category_entry.grid(column=0, row=0, padx=20, pady=20)
+    category_add.grid(column=1, row=0)
+
 def open_settings():
+    global category_listbox, new_category_entry
+
     root = Tk()
 
     root.title("Settings")
@@ -49,18 +74,18 @@ def open_settings():
     tab2 = Frame(notebook, padding=50)
     notebook.add(tab2, text="Category")
     categorylb = Label(tab2, text="Categories: ")
-    category = Listbox(tab2)
+    category_listbox = Listbox(tab2)
     category_edit = Button(tab2, text='edit')
-    category_add = Button(tab2, text="+", width=5)
+    category_add = Button(tab2, text="+", width=5, command=add_category)
     category_del = Button(tab2, text="-", width=5)
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
-    category.grid(column=0, row=1, columnspan=3, sticky='nswe')
+    category_listbox.grid(column=0, row=1, columnspan=3, sticky='nswe')
     category_edit.grid(column=0, row=2, sticky='w', pady=5)
     category_add.grid(column=1, row=2, sticky='e')
     category_del.grid(column=2, row=2, sticky='e')
 
     for i in settings['category']:
-        category.insert(END, i)
+        category_listbox.insert(END, i)
 
     #=====================================
 
