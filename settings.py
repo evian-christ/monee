@@ -40,12 +40,35 @@ def add_category():
 
     add_window.title("Add new category")
     add_window.geometry("260x65+1000+500")
+    add_window.resizable(0, 0)
 
     category_entry = Entry(add_window)
     category_add = Button(add_window, text="Add", command=add)
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_add.grid(column=1, row=0)
+
+#=====================================
+
+def edit_category():
+    selected = category_listbox.curselection()[0]
+    if not selected:
+        return
+
+    edit_window = Tk()
+
+    edit_window.title("Edit")
+    edit_window.geometry("260x65+1000+500")
+    edit_window.resizable(0, 0)
+
+    category_entry = Entry(edit_window)
+    category_entry.insert(0, settings['category'][selected])
+    category_edit = Button(edit_window, text="confirm")
+
+    category_entry.grid(column=0, row=0, padx=20, pady=20)
+    category_edit.grid(column=1, row=0)
+
+#=====================================
 
 def open_settings():
     global category_listbox, new_category_entry
@@ -76,8 +99,8 @@ def open_settings():
     tab2 = Frame(notebook, padding=50)
     notebook.add(tab2, text="Category")
     categorylb = Label(tab2, text="Categories: ")
-    category_listbox = Listbox(tab2)
-    category_edit = Button(tab2, text='edit')
+    category_listbox = Listbox(tab2, selectmode=SINGLE)
+    category_edit = Button(tab2, text='edit', command=edit_category)
     category_add = Button(tab2, text="+", width=5, command=add_category)
     category_del = Button(tab2, text="-", width=5)
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
