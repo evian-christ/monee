@@ -160,10 +160,17 @@ def open_view():
     delbtn.grid(column=0, row=2, sticky='w')
     editbtn.grid(column=1, row=2, sticky='e')
 
+    
+
     table = Treeview(frame, columns=
                      ("ID", "Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
                      show="headings")
     table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
+
+    scrollbar = Scrollbar(frame, orient=VERTICAL, command=table.yview)
+    scrollbar.grid(column=2, row=1, sticky='nse')
+
+    table.configure(yscrollcommand=scrollbar.set)
 
     table.column("ID", width=0, stretch=NO)  # Hide the ID column
     table.column("Date", width=100)
