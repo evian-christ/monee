@@ -55,6 +55,19 @@ def edit_category():
     if not selected:
         return
 
+    def edit():
+        category_value = category_entry.get()
+        if category_value in settings['category']:
+            messagebox.showerror("Error", "Already exists!", parent=edit_window)
+            pass
+        else:
+            category_listbox.delete(selected, selected)
+            category_listbox.insert(END, category_value)
+            settings['category'][selected] = category_value
+            with open('config.json', 'w') as config_file:
+                json.dump(settings, config_file)
+            edit_window.destroy()
+
     edit_window = Tk()
 
     edit_window.title("Edit")
@@ -63,7 +76,7 @@ def edit_category():
 
     category_entry = Entry(edit_window)
     category_entry.insert(0, settings['category'][selected])
-    category_edit = Button(edit_window, text="confirm")
+    category_edit = Button(edit_window, text="Confirm", command=edit)
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_edit.grid(column=1, row=0)
