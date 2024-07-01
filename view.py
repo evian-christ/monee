@@ -5,9 +5,6 @@ from tkinter import messagebox
 import sqlite3
 import json
 
-with open('config.json', 'r') as config_file:
-    settings = json.load(config_file)
-
 def fetch_data():
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
@@ -38,7 +35,7 @@ def delete_selected_row(root):
     # Remove from Treeview
     table.delete(item)
 
-def edit_selected_row():
+def edit_selected_row(settings):
     def on_submit():
         try:
             date_value = strToUnix(date.get())
@@ -144,6 +141,9 @@ def edit_selected_row():
     editbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
 
 def open_view():
+    with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
+
     global table
     root = Tk()
     root.title("View your entries")
@@ -159,7 +159,7 @@ def open_view():
 
     advbtn = Button(frame, text="Advanced")
     delbtn = Button(frame, text="Delete", command=lambda: delete_selected_row(root))
-    editbtn = Button(frame, text="Edit", command=edit_selected_row)
+    editbtn = Button(frame, text="Edit", command=lambda: edit_selected_row(settings))
     advbtn.grid(column=1, row=0, sticky='e')
     delbtn.grid(column=0, row=2, sticky='w', padx=(10, 0))
     editbtn.grid(column=1, row=2, sticky='e')

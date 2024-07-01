@@ -6,10 +6,10 @@ from dateAndTime import *
 import sqlite3
 import json
 
-with open('config.json', 'r') as config_file:
-    settings = json.load(config_file)
-
 def open_add():
+    with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
+
     def on_submit():
         try:
             date_value = strToUnix(date.get())
