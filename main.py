@@ -12,7 +12,7 @@ dbc = sqlite3.connect('data.db')
 dbc.execute('''
 CREATE TABLE if not exists expenses
             (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             date INTEGER,
             name VARCHAR(32),
             cost REAL,
