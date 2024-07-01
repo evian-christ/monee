@@ -83,10 +83,10 @@ def edit_category():
 
 #=====================================
 
-def del_category():
+def del_category(root):
     selected = category_listbox.curselection()[0]
 
-    confirm = messagebox.askyesno("Delete", "You sure bro?")
+    confirm = messagebox.askyesno("Delete", "You sure bro?", parent=root)
     if not confirm:
         return
 
@@ -129,7 +129,7 @@ def open_settings():
     category_listbox = Listbox(tab2, selectmode=SINGLE)
     category_edit = Button(tab2, text='edit', command=edit_category)
     category_add = Button(tab2, text="+", width=5, command=add_category)
-    category_del = Button(tab2, text="-", width=5, command=del_category)
+    category_del = Button(tab2, text="-", width=5, command=lambda : del_category(root))
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
     category_listbox.grid(column=0, row=1, columnspan=3, sticky='nswe')
     category_edit.grid(column=0, row=2, sticky='w', pady=5)
