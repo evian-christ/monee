@@ -4,6 +4,10 @@ from tkinter.ttk import *
 from dateAndTime import *
 
 import sqlite3
+import json
+
+with open('config.json', 'r') as config_file:
+    settings = json.load(config_file)
 
 def open_add():
     def on_submit():
@@ -48,7 +52,7 @@ def open_add():
     ctgr = Combobox(
         frame,
         state="readonly",
-        values=["Food", "Entertainment", "Transport", "Misc"]
+        values=settings['category']
     )
     costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
     cost = Entry(frame, width=6, justify=RIGHT)
