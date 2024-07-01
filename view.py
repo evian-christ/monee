@@ -12,7 +12,7 @@ def fetch_data():
     dbc.close()
     return rows
 
-def delete_selected_row():
+def delete_selected_row(root):
     selected_item = table.selection()
     if not selected_item:
         return
@@ -20,7 +20,7 @@ def delete_selected_row():
     item = selected_item[0]
     entry_id = table.set(item, 'ID')  # Get the hidden ID
 
-    confirm = messagebox.askyesno("Delete", "You sure bro?")
+    confirm = messagebox.askyesno("Delete", "You sure bro?", parent=root)
     if not confirm:
         return
 
@@ -154,10 +154,10 @@ def open_view():
     frame.rowconfigure(1, weight=1)
 
     advbtn = Button(frame, text="Advanced")
-    delbtn = Button(frame, text="Delete", command=delete_selected_row)
+    delbtn = Button(frame, text="Delete", command=lambda: delete_selected_row(root))
     editbtn = Button(frame, text="Edit", command=edit_selected_row)
     advbtn.grid(column=1, row=0, sticky='e')
-    delbtn.grid(column=0, row=2, sticky='w')
+    delbtn.grid(column=0, row=2, sticky='w', padx=(10, 0))
     editbtn.grid(column=1, row=2, sticky='e')
 
     
@@ -165,7 +165,7 @@ def open_view():
     table = Treeview(frame, columns=
                      ("ID", "Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
                      show="headings")
-    table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10)
+    table.grid(column=0, row=1, columnspan=2, sticky='nswe', pady=10, padx=(10, 0))
 
     scrollbar = Scrollbar(frame, orient=VERTICAL, command=table.yview)
     scrollbar.grid(column=2, row=1, sticky='nse')
