@@ -3,6 +3,10 @@ from tkinter.ttk import *
 from dateAndTime import *
 from tkinter import messagebox
 import sqlite3
+import json
+
+with open('config.json', 'r') as config_file:
+    settings = json.load(config_file)
 
 def fetch_data():
     dbc = sqlite3.connect('data.db')
@@ -99,7 +103,7 @@ def edit_selected_row():
     ctgr = Combobox(
         frame,
         state="readonly",
-        values=["Food", "Entertainment", "Transport", "Misc"]
+        values=settings['category']
     )
     ctgr.set(entry[6])
     costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
