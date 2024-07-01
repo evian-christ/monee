@@ -83,8 +83,22 @@ def edit_category():
 
 #=====================================
 
+def del_category():
+    selected = category_listbox.curselection()[0]
+
+    confirm = messagebox.askyesno("Delete", "You sure bro?")
+    if not confirm:
+        return
+
+    category_listbox.delete(selected, selected)
+    settings['category'].remove(settings['category'][selected])
+    with open('config.json', 'w') as config_file:
+        json.dump(settings, config_file)
+
+#=====================================
+
 def open_settings():
-    global category_listbox, new_category_entry
+    global category_listbox
 
     root = Tk()
 
@@ -115,7 +129,7 @@ def open_settings():
     category_listbox = Listbox(tab2, selectmode=SINGLE)
     category_edit = Button(tab2, text='edit', command=edit_category)
     category_add = Button(tab2, text="+", width=5, command=add_category)
-    category_del = Button(tab2, text="-", width=5)
+    category_del = Button(tab2, text="-", width=5, command=del_category)
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
     category_listbox.grid(column=0, row=1, columnspan=3, sticky='nswe')
     category_edit.grid(column=0, row=2, sticky='w', pady=5)
