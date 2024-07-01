@@ -97,6 +97,14 @@ def del_category(root):
 
 #=====================================
 
+def on_day_select(event, combobox):
+    selected_day = combobox.get()
+    settings['month_start_date'] = selected_day
+    with open('config.json', 'w') as config_file:
+        json.dump(settings, config_file)
+
+#=====================================
+
 def open_settings():
     global category_listbox
 
@@ -119,7 +127,7 @@ def open_settings():
         values=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]
     )
     startday.set(settings['month_start_date'])
-    print(startday.current())
+    startday.bind("<<ComboboxSelected>>", lambda event: on_day_select(event, startday))
     startdaylb.grid(column=0, row=0)
     startday.grid(column=1, row=0)
 
