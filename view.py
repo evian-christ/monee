@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from dateAndTime import *
 from tkinter import messagebox
+from decimal import Decimal
 
 import sqlite3
 import json
@@ -290,6 +291,6 @@ def open_view():
     for row in rows:
         date_str = unixToStr(row[1])  # Convert Unix timestamp to readable date string
         # Insert data into the Treeview, including the hidden ID
-        table.insert("", "end", values=(row[0], date_str, row[2], row[3], row[4], row[5], row[6], row[7]))
+        table.insert("", "end", values=(row[0], date_str, row[2], row[3], Decimal(row[4]).quantize(Decimal('0.01')), row[5], row[6], row[7]))
 
     root.mainloop()
