@@ -115,7 +115,7 @@ def open_settings():
 
     notebook = Notebook(root, padding=10)
 
-    #=====================================
+#=====================================
 
     tab1 = Frame(notebook, padding=50)
     notebook.add(tab1, text="General")
@@ -131,7 +131,7 @@ def open_settings():
     startdaylb.grid(column=0, row=0)
     startday.grid(column=1, row=0)
 
-    #=====================================
+#=====================================
 
     tab2 = Frame(notebook, padding=50)
     notebook.add(tab2, text="Category")
@@ -149,7 +149,7 @@ def open_settings():
     for i in settings['category']:
         category_listbox.insert(END, i)
 
-    #=====================================
+#=====================================
 
     notebook.grid(sticky='nswe')
 

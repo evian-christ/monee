@@ -26,22 +26,26 @@ CREATE TABLE if not exists expenses
 #=====================================
 
 main = Tk()
-main.grid_columnconfigure(0, weight=1)
+#main.grid_columnconfigure(0, weight=1)
 
 main.title("monee v0.0.1")
-main.geometry("250x305+900+400")
+main.geometry("700x305+900+400")
 
 #=====================================
 
-tday = Label(main, text = today)
-tday.grid(pady=7, sticky='n')
+tday = Label(main, text=today)
+tday.grid(column=0, row=0, pady=(15, 5), padx=10)
+summary = Label(main, text="summary")
+summary.grid(column=0, row=1, pady=(5,10), padx=10)
 
-btn_add = Button(main, text = "Add", padding=10, command = open_add)
-btn_view = Button(main, text = "View", padding=10, command = open_view)
-btn_settings = Button(main, text = "Settings", padding=10, command = open_settings)
+btn_add = Button(main, text = "New", command = open_add)
+btn_view = Button(main, text = "View", command = open_view)
+btn_stats = Button(main, text = "Stats", state=DISABLED)
+btn_settings = Button(main, text = "Settings", command = open_settings)
 
-btn_add.grid(column = 0, row = 2, pady = 10)
-btn_view.grid(column = 0, row = 3, pady = 10)
-btn_settings.grid(column = 0, row = 4, pady = 10)
+btn_add.grid(column=0, row=4, pady=5, padx=(20, 10))
+btn_view.grid(column=1, row=4, pady=5, padx=10)
+btn_stats.grid(column=2, row=4, pady=5, padx=10)
+btn_settings.grid(column=3, row=4, pady=5, padx=10)
 
 main.mainloop()
