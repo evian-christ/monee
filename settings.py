@@ -108,8 +108,6 @@ def edit_category(root):
         edit_window.grab_set()
     else:
         messagebox.showerror(editexts[0][lan], editexts[4][lan], parent=root)
-        
-    
     
 #=====================================
 
@@ -151,14 +149,15 @@ def save_settings(day, language):
 
 #=====================================
 
-def budget_tab_refresh(event):
+def budget_tab_refresh(event, budg_tv):
+    for item in budg_tv.get_children():
+        budg_tv.delete(item)
+
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
     
     for n, i in enumerate(settings["category"]):
-        print(i, settings['budget'][n])
-        #budg_tv.insert("", "end", values=(i, ))
-
+        budg_tv.insert("", "end", values=(i, settings['budget'][n]))
 
 #=====================================
 
@@ -261,7 +260,7 @@ def open_settings():
 
 #=====================================
 
-    notebook.bind("<<NotebookTabChanged>>", budget_tab_refresh)
+    notebook.bind("<<NotebookTabChanged>>", lambda event: budget_tab_refresh(event, budg_tv))
 
     notebook.grid(sticky='nswe')
 
