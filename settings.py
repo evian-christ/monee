@@ -5,11 +5,13 @@ from tkinter import messagebox
 
 import json
 import os
+import sys
 
 #=====================================
 
 settings = {
     "month_start_date": "1",
+    "language": "English",
     "category": ["Food", "Entertainment", "Transport", "Misc"],
     "Budget": ["550", "150", "100", "100"]
 }
@@ -97,11 +99,16 @@ def del_category(root):
 
 #=====================================
 
-def on_day_select(event, combobox):
-    selected_day = combobox.get()
-    settings['month_start_date'] = selected_day
+def save_settings(day, language):
+    sday = day.get()
+    lang = language.get()
+    settings['month_start_date'] = sday
+    settings['language'] = lang
     with open('config.json', 'w') as config_file:
         json.dump(settings, config_file)
+
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 #=====================================
 
@@ -111,15 +118,15 @@ def open_settings():
     root = Tk()
 
     root.title("Settings")
-    root.geometry("500x500+800+300")
+    root.geometry("333x333+800+300")
 
     notebook = Notebook(root, padding=10)
-
+    
 #=====================================
 
-    tab1 = Frame(notebook, padding=50)
+    tab1 = Frame(notebook, borderwidth=2, relief="solid")
     notebook.add(tab1, text="General")
-    startdaylb = Label(tab1, text = "Start day of month: ")
+    startdaylb = Label(tab1, text ="Start day of month")
     startday = Combobox(
         tab1,
         width=2,
@@ -127,13 +134,27 @@ def open_settings():
         values=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]
     )
     startday.set(settings['month_start_date'])
-    startday.bind("<<ComboboxSelected>>", lambda event: on_day_select(event, startday))
-    startdaylb.grid(column=0, row=0)
-    startday.grid(column=1, row=0)
+    startdaylb.grid(column=0, row=0, sticky='w', padx=(20, 0))
+    startday.grid(column=1, row=0, sticky='e', padx=(80, 20), pady=(40, 10))
+
+    langlb = Label(tab1, text="Language")
+    lang = Combobox(
+        tab1,
+        width=10,
+        state="readonly",
+        values=["English", "한국어"]
+    )
+    lang.set(settings['language'])
+    langlb.grid(column=0, row=1, sticky='w', padx=(20, 0))
+    lang.grid(column=1, row=1, sticky='e', padx=(80, 20), pady=(20, 10))
+
+    btn_save = Button(tab1, text="Save", command=lambda: save_settings(startday, lang))
+    btn_save.grid(column=1, row=3, sticky='e', pady=(125, 0), padx=(0, 20))
+    
 
 #=====================================
 
-    tab2 = Frame(notebook, padding=50)
+    tab2 = Frame(notebook, padding=(70, 30), borderwidth=2, relief="solid")
     notebook.add(tab2, text="Category")
     categorylb = Label(tab2, text="Categories: ")
     category_listbox = Listbox(tab2, selectmode=SINGLE)
