@@ -83,7 +83,7 @@ def edit_category(root):
             pass
         else:
             category_listbox.delete(selected, selected)
-            category_listbox.insert(END, category_value)
+            category_listbox.insert(selected, category_value)
             settings['category'][selected] = category_value
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
@@ -161,6 +161,55 @@ def budget_tab_refresh(event, budg_tv):
 
 #=====================================
 
+def change_budget(root):
+    changetexts=[
+        ["Error", "오류"],
+        ["Already exists!", "중복 오류"],
+        ["Edit", "수정"],
+        ["Confirm", "확인"],
+        ["Select an item!", "선택한 항목이 없습니다"]
+    ]
+    
+    def change():
+        budget_value = budget_entry.get()
+        if isinstance(budget_value, int):
+            messagebox.showerror(changetexts[0][lan], changetexts[1][lan], parent=edit_window)
+            pass
+        else:
+            selected_item = budg_tv.selection()[0]
+            budg_tv.item(selected_item, values=(budg_tv.item(selected_item, 'values')[0], budget_value))
+            index = budg_tv.index(selected_item)
+            settings['budget'][index] = budget_value
+            with open('config.json', 'w') as config_file:
+                json.dump(settings, config_file)
+            change_window.destroy()
+
+    if budg_tv.selection():
+        id = budg_tv.selection()[0]
+        category = budg_tv.set(id, 'Category')
+        budget = budg_tv.set(id, 'Budget')
+
+        change_window = Toplevel()
+
+        change_window.title(category)
+        change_window.geometry("260x65+1000+500")
+        change_window.resizable(0, 0)
+
+        budget_entry = Entry(change_window)
+        budget_entry.insert(0, budget)
+        category_edit = Button(change_window, text=changetexts[3][lan], command=change)
+
+        budget_entry.grid(column=0, row=0, padx=20, pady=20)
+        category_edit.grid(column=1, row=0)
+
+        change_window.grab_set()
+    else:
+        messagebox.showerror(changetexts[0][lan], changetexts[4][lan], parent=root)
+
+    
+
+#=====================================
+
 def open_settings():
     texts=[
         ["Settings", "설정"],
@@ -177,6 +226,7 @@ def open_settings():
     ]
 
     global category_listbox
+    global budg_tv
 
     root = Toplevel()
 
@@ -255,7 +305,7 @@ def open_settings():
     budg_tv.heading("Category", text=texts[5][lan])
     budg_tv.heading("Budget", text=texts[8][lan])
 
-    btn_edit = Button(tab3, text=texts[10][lan])
+    btn_edit = Button(tab3, text=texts[10][lan], command=lambda: change_budget(root))
     btn_edit.grid(column=0, row=2, sticky='e', pady=(10,10))
 
 #=====================================
