@@ -66,18 +66,15 @@ def add_category():
 
 #=====================================
 
-def edit_category():
+def edit_category(root):
     editexts=[
         ["Error", "오류"],
         ["Already exists!", "중복 오류"],
         ["Edit", "수정"],
-        ["Confirm", "확인"]
+        ["Confirm", "확인"],
+        ["Select a category!", "수정할 카테고리를 선택하십시오"]
     ]
-
-    selected = category_listbox.curselection()[0]
-    if not selected:
-        return
-
+    
     def edit():
         category_value = category_entry.get()
         if category_value in settings['category']:
@@ -91,21 +88,28 @@ def edit_category():
                 json.dump(settings, config_file)
             edit_window.destroy()
 
-    edit_window = Toplevel()
+    if category_listbox.curselection():
+        selected = category_listbox.curselection()[0]
 
-    edit_window.title(editexts[2][lan])
-    edit_window.geometry("260x65+1000+500")
-    edit_window.resizable(0, 0)
+        edit_window = Toplevel()
 
-    category_entry = Entry(edit_window)
-    category_entry.insert(0, settings['category'][selected])
-    category_edit = Button(edit_window, text=editexts[3][lan], command=edit)
+        edit_window.title(editexts[2][lan])
+        edit_window.geometry("260x65+1000+500")
+        edit_window.resizable(0, 0)
 
-    category_entry.grid(column=0, row=0, padx=20, pady=20)
-    category_edit.grid(column=1, row=0)
+        category_entry = Entry(edit_window)
+        category_entry.insert(0, settings['category'][selected])
+        category_edit = Button(edit_window, text=editexts[3][lan], command=edit)
 
-    edit_window.grab_set()
+        category_entry.grid(column=0, row=0, padx=20, pady=20)
+        category_edit.grid(column=1, row=0)
 
+        edit_window.grab_set()
+    else:
+        messagebox.showerror(editexts[0][lan], editexts[4][lan], parent=root)
+        
+    
+    
 #=====================================
 
 def del_category(root):
@@ -199,7 +203,7 @@ def open_settings():
     notebook.add(tab2, text=texts[5][lan])
     categorylb = Label(tab2, text=texts[6][lan])
     category_listbox = Listbox(tab2, selectmode=SINGLE)
-    category_edit = Button(tab2, text=texts[7][lan], command=edit_category)
+    category_edit = Button(tab2, text=texts[7][lan], command=lambda: edit_category(root))
     category_add = Button(tab2, text="+", width=5, command=add_category)
     category_del = Button(tab2, text="-", width=5, command=lambda : del_category(root))
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
