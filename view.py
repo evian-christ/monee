@@ -44,8 +44,7 @@ def open_add():
             root.destroy()
             print("added succesfully!")
 
-            date_str = unixToStr(date_value)  # Convert Uni1x timestamp to readable date string
-            # Insert data into the Treeview, including the hidden ID
+            date_str = unixToStr(date_value)
             table.insert("", "0", values=(c.lastrowid, date_str, name_value, ctgr_value, cost_value, rate_value, desc_value, rmrk_value))
         
         except Exception as e:

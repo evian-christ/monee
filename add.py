@@ -34,7 +34,8 @@ def open_add():
             print("added succesfully!")
         
         except Exception as e:
-            messagebox.showerror("Error", e)
+            print(e)
+            messagebox.showerror("Error", e, parent=root)
 
     texts = [
         ["New expense", "새로운 지출"],
