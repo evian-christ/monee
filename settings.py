@@ -13,7 +13,7 @@ settings = {
     "month_start_date": "1",
     "language": "English",
     "category": ["Food", "Entertainment", "Transport", "Other"],
-    "Budget": ["0", "0", "0", "0"]
+    "budget": ["0", "0", "0", "0"]
 }
 
 if not os.path.exists('config.json'):
@@ -41,6 +41,7 @@ def add_category():
         else:
             category_listbox.insert(END, category_value)
             settings['category'].append(category_value)
+            settings['budget'].append(0)
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
             add_window.destroy()
@@ -128,7 +129,8 @@ def del_category(root):
             return
 
         category_listbox.delete(selected, selected)
-        settings['category'].remove(settings['category'][selected])
+        settings['category'].pop(selected)
+        settings['budget'].pop(selected)
         with open('config.json', 'w') as config_file:
             json.dump(settings, config_file)
     else:
@@ -146,6 +148,17 @@ def save_settings(day, language):
 
     python = sys.executable
     os.execl(python, python, * sys.argv)
+
+#=====================================
+
+def budget_tab_refresh(event):
+    with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
+    
+    for n, i in enumerate(settings["category"]):
+        print(i, settings['budget'][n])
+        #budg_tv.insert("", "end", values=(i, ))
+
 
 #=====================================
 
@@ -246,11 +259,9 @@ def open_settings():
     btn_edit = Button(tab3, text=texts[10][lan])
     btn_edit.grid(column=0, row=2, sticky='e', pady=(10,10))
 
-    for n, i in enumerate(settings["category"]):
-        print(i, settings['Budget'][n])
-        #budg_tv.insert("", "end", values=(i, ))
-
 #=====================================
+
+    notebook.bind("<<NotebookTabChanged>>", budget_tab_refresh)
 
     notebook.grid(sticky='nswe')
 
