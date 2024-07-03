@@ -46,14 +46,15 @@ def open_add():
             print("added succesfully!")
         
         except Exception as e:
-            print(e)
             messagebox.showerror("Error", e, parent=root)
 
-    root = Tk()
+    root = Toplevel()
 
     root.title(texts[0][lan])
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
+
+    root.grab_set()
 
     frame = Frame(root)
     

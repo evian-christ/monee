@@ -52,11 +52,13 @@ def open_add():
         except Exception as e:
             messagebox.showerror("Error", e, parent=root)
 
-    root = Tk()
+    root = Toplevel()
 
     root.title(addtext[0][lan])
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
+
+    root.grab_set()
 
     frame = Frame(root)
     
@@ -107,30 +109,43 @@ def open_add():
     root.mainloop()
 
 def delete_selected_row(root):
-    selected_item = table.selection()
-    if not selected_item:
-        return
+    
+    if table.selection():
+        selected_item = table.selection()
 
-    item = selected_item[0]
-    entry_id = table.set(item, 'ID')  # Get the hidden ID
+        item = selected_item[0]
+        entry_id = table.set(item, 'ID')  # Get the hidden ID
 
-    confirmlb = ["You sure bro?", "삭제하시겠습니까????"]
+        confirmlb = ["You sure bro?", "삭제하시겠습니까????"]
 
-    confirm = messagebox.askyesno("Delete", confirmlb[lan], parent=root)
-    if not confirm:
-        return
+        confirm = messagebox.askyesno("Delete", confirmlb[lan], parent=root)
+        if not confirm:
+            return
 
-    # Connect to the database
-    dbc = sqlite3.connect('data.db')
-    cursor = dbc.cursor()
-    cursor.execute("DELETE FROM expenses WHERE id=?", (entry_id,))
-    dbc.commit()
-    dbc.close()
+        # Connect to the database
+        dbc = sqlite3.connect('data.db')
+        cursor = dbc.cursor()
+        cursor.execute("DELETE FROM expenses WHERE id=?", (entry_id,))
+        dbc.commit()
+        dbc.close()
 
-    # Remove from Treeview
-    table.delete(item)
+        # Remove from Treeview
+        table.delete(item)
+    else:
+        deltexts=[
+            ["Error", "오류"],
+            ["Select an item!", "삭제할 항목을 선택하십시오"]
+        ]
+        messagebox.showerror(deltexts[0][lan], deltexts[1][lan], parent=root)
 
-def edit_selected_row(settings):
+def edit_selected_row(oroot, settings):
+    edittext=[
+        ["Edit ", "수정 "],
+        ["Save", "저장"],
+        ["Error", "오류"],
+        ["Select an item!", "수정할 항목을 선택하십시오"]
+    ]
+    
     def on_submit():
         try:
             date_value = strToUnix(date.get())
@@ -162,83 +177,81 @@ def edit_selected_row(settings):
         except Exception as e:
             messagebox.showerror("Error", e)
     
-    selected_item = table.selection()
-    if not selected_item:
-        return
     
-    item = selected_item[0]
-    entry_id = table.set(item, 'ID')  # Get the hidden ID
-
-    # Connect to the database
-    dbc = sqlite3.connect('data.db')
-    cursor = dbc.cursor()
-    cursor.execute("SELECT * FROM expenses WHERE id=?", (entry_id,))
-    dbc.commit()
-    entry = cursor.fetchone()
-    dbc.close()
-
-    root = Tk()
-
-    edittext=[
-        ["Edit ", "수정 "],
-        ["Save", "저장"]
-    ]
-
-    root.title(edittext[0][lan] + str(entry[0]))
-    root.geometry("260x380+900+350")
-    root.resizable(0, 0)
-
-    frame = Frame(root)
+    if table.selection():
+        selected_item = table.selection()
     
-    datelb = Label(frame, text=addtext[1][lan], font=('Consolas', 10))
-    date = Entry(frame)
-    date.insert(0, unixToStr(entry[1]))
-    namelb = Label(frame, text=addtext[2][lan], font=('Consolas', 10))
-    name = Entry(frame)
-    name.insert(0, entry[2])
-    ctgrlb = Label(frame, text=addtext[3][lan], font=('Consolas', 10))
-    ctgr = Combobox(
-        frame,
-        state="readonly",
-        values=settings['category']
-    )
-    ctgr.set(entry[6])
-    costlb = Label(frame, text=addtext[4][lan], font=('Consolas', 10))
-    cost = Entry(frame, width=6, justify=RIGHT)
-    cost.insert(0, entry[3])
-    ratelb = Label(frame, text=addtext[5][lan], font=('Consolas', 10))
-    rate = Combobox(
-        frame,
-        width=2,
-        state="readonly",
-        values=[5,4,3,2,1]
-    )
-    rate.set(entry[4])
-    desclb = Label(frame, text=addtext[6][lan], font=('Consolas', 10))
-    desc = Text(frame, height=5, width=10)
-    desc.insert("1.0", entry[5])
-    rmrklb = Label(frame, text=addtext[7][lan], font=('Consolas', 10))
-    rmrk = Text(frame, height=5, width=10)
-    rmrk.insert("1.0", entry[7])
-    editbtn = Button(frame, text=edittext[1][lan], command=on_submit)
+        item = selected_item[0]
+        entry_id = table.set(item, 'ID')  # Get the hidden ID
 
-    frame.grid(column=0, row=0, sticky='n')
+        # Connect to the database
+        dbc = sqlite3.connect('data.db')
+        cursor = dbc.cursor()
+        cursor.execute("SELECT * FROM expenses WHERE id=?", (entry_id,))
+        dbc.commit()
+        entry = cursor.fetchone()
+        dbc.close()
 
-    datelb.grid(column=0, row=0, padx=10, pady=(13, 10), sticky='w')
-    date.grid(column=1, row=0, columnspan=3, pady=(13, 10), sticky='we')
-    namelb.grid(column=0, row=1, padx=10, pady=10, sticky='w')
-    name.grid(column=1, row=1, columnspan=3, sticky='we')
-    ctgrlb.grid(column=0, row=2, padx=10, pady=10, sticky='w')
-    ctgr.grid(column=1, row=2, columnspan=3, sticky='we')
-    costlb.grid(column=0, row=3, padx=10, pady=10, sticky='w')
-    cost.grid(column=1, row=3, sticky='w')
-    ratelb.grid(column=2, row=3, padx=10, sticky='w')
-    rate.grid(column=3, row=3, sticky='w')
-    desclb.grid(column=0, row=4, padx=10, pady=10, sticky='nw')
-    desc.grid(column=1, row=4, columnspan=3, rowspan=2, pady=10, sticky='we')
-    rmrklb.grid(column=0, row=6, padx=10, pady=10, sticky='nw')
-    rmrk.grid(column=1, row=6, columnspan=3, rowspan=2, pady=10, sticky='we')
-    editbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
+        root = Toplevel()
+
+        root.title(edittext[0][lan] + str(entry[0]))
+        root.geometry("260x380+900+350")
+        root.resizable(0, 0)
+        root.grab_set()
+
+        frame = Frame(root)
+        
+        datelb = Label(frame, text=addtext[1][lan], font=('Consolas', 10))
+        date = Entry(frame)
+        date.insert(0, unixToStr(entry[1]))
+        namelb = Label(frame, text=addtext[2][lan], font=('Consolas', 10))
+        name = Entry(frame)
+        name.insert(0, entry[2])
+        ctgrlb = Label(frame, text=addtext[3][lan], font=('Consolas', 10))
+        ctgr = Combobox(
+            frame,
+            state="readonly",
+            values=settings['category']
+        )
+        ctgr.set(entry[6])
+        costlb = Label(frame, text=addtext[4][lan], font=('Consolas', 10))
+        cost = Entry(frame, width=6, justify=RIGHT)
+        cost.insert(0, entry[3])
+        ratelb = Label(frame, text=addtext[5][lan], font=('Consolas', 10))
+        rate = Combobox(
+            frame,
+            width=2,
+            state="readonly",
+            values=[5,4,3,2,1]
+        )
+        rate.set(entry[4])
+        desclb = Label(frame, text=addtext[6][lan], font=('Consolas', 10))
+        desc = Text(frame, height=5, width=10)
+        desc.insert("1.0", entry[5])
+        rmrklb = Label(frame, text=addtext[7][lan], font=('Consolas', 10))
+        rmrk = Text(frame, height=5, width=10)
+        rmrk.insert("1.0", entry[7])
+        editbtn = Button(frame, text=edittext[1][lan], command=on_submit)
+
+        frame.grid(column=0, row=0, sticky='n')
+
+        datelb.grid(column=0, row=0, padx=10, pady=(13, 10), sticky='w')
+        date.grid(column=1, row=0, columnspan=3, pady=(13, 10), sticky='we')
+        namelb.grid(column=0, row=1, padx=10, pady=10, sticky='w')
+        name.grid(column=1, row=1, columnspan=3, sticky='we')
+        ctgrlb.grid(column=0, row=2, padx=10, pady=10, sticky='w')
+        ctgr.grid(column=1, row=2, columnspan=3, sticky='we')
+        costlb.grid(column=0, row=3, padx=10, pady=10, sticky='w')
+        cost.grid(column=1, row=3, sticky='w')
+        ratelb.grid(column=2, row=3, padx=10, sticky='w')
+        rate.grid(column=3, row=3, sticky='w')
+        desclb.grid(column=0, row=4, padx=10, pady=10, sticky='nw')
+        desc.grid(column=1, row=4, columnspan=3, rowspan=2, pady=10, sticky='we')
+        rmrklb.grid(column=0, row=6, padx=10, pady=10, sticky='nw')
+        rmrk.grid(column=1, row=6, columnspan=3, rowspan=2, pady=10, sticky='we')
+        editbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
+    else:
+        messagebox.showerror(edittext[2][lan], edittext[3][lan], parent=oroot)
 
 def open_view():
     with open('config.json', 'r') as config_file:
@@ -260,9 +273,10 @@ def open_view():
     ]
 
     global table
-    root = Tk()
+    root = Toplevel()
     root.title(texts[0][lan])
     root.geometry("1000x390+300+200")
+    root.grab_set()
 
     frame = Frame(root, padding=15)
     frame.grid(column=0, row=0, sticky="nsew")
@@ -274,14 +288,12 @@ def open_view():
 
     advbtn = Button(frame, text=texts[1][lan], state="disabled")
     delbtn = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
-    editbtn = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(settings))
+    editbtn = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings))
     addbtn = Button(frame, text=texts[4][lan], command=open_add)
     advbtn.grid(column=1, row=0, sticky='e')
     delbtn.grid(column=1, row=2, sticky='e')
     editbtn.grid(column=1, row=2, sticky='e', padx=(10, 90))
     addbtn.grid(column=1, row=2, sticky='e', padx=(0, 180))
-
-    
 
     table = Treeview(frame, columns=
                      ("ID", "Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
