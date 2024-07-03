@@ -3,6 +3,8 @@ from tkinter.ttk import *
 from dateAndTime import *
 from tkinter import messagebox
 from decimal import Decimal
+from add import texts as addtext
+from settings import lan
 
 import sqlite3
 import json
@@ -52,37 +54,37 @@ def open_add():
 
     root = Tk()
 
-    root.title("Add New Entry")
+    root.title(addtext[0][lan])
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
 
     frame = Frame(root)
     
-    datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
+    datelb = Label(frame, text=addtext[1][lan], font=('Consolas', 10))
     date = Entry(frame)
     date.insert(0, today)
-    namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
+    namelb = Label(frame, text=addtext[2][lan], font=('Consolas', 10))
     name = Entry(frame)
-    ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
+    ctgrlb = Label(frame, text=addtext[3][lan], font=('Consolas', 10))
     ctgr = Combobox(
         frame,
         state="readonly",
         values=settings['category']
     )
-    costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
+    costlb = Label(frame, text=addtext[4][lan], font=('Consolas', 10))
     cost = Entry(frame, width=6, justify=RIGHT)
-    ratelb = Label(frame, text = "Rating:", font=('Consolas', 10))
+    ratelb = Label(frame, text=addtext[5][lan], font=('Consolas', 10))
     rate = Combobox(
         frame,
         width=2,
         state="readonly",
         values=[5,4,3,2,1]
     )
-    desclb = Label(frame, text = "Desc: ", font=('Consolas', 10))
+    desclb = Label(frame, text=addtext[6][lan], font=('Consolas', 10))
     desc = Text(frame, height=5, width=10)
-    rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
+    rmrklb = Label(frame, text=addtext[7][lan], font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
-    addbtn = Button(frame, text="Add", command=on_submit)
+    addbtn = Button(frame, text=addtext[8][lan], command=on_submit)
 
     frame.grid(column=0, row=0, sticky='n')
 
@@ -112,7 +114,9 @@ def delete_selected_row(root):
     item = selected_item[0]
     entry_id = table.set(item, 'ID')  # Get the hidden ID
 
-    confirm = messagebox.askyesno("Delete", "You sure bro?", parent=root)
+    confirmlb = ["You sure bro?", "삭제하시겠습니까????"]
+
+    confirm = messagebox.askyesno("Delete", confirmlb[lan], parent=root)
     if not confirm:
         return
 
@@ -175,29 +179,34 @@ def edit_selected_row(settings):
 
     root = Tk()
 
-    root.title("Edit " + str(entry[0]))
+    edittext=[
+        ["Edit ", "수정 "],
+        ["Save", "저장"]
+    ]
+
+    root.title(edittext[0][lan] + str(entry[0]))
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
 
     frame = Frame(root)
     
-    datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
+    datelb = Label(frame, text=addtext[1][lan], font=('Consolas', 10))
     date = Entry(frame)
     date.insert(0, unixToStr(entry[1]))
-    namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
+    namelb = Label(frame, text=addtext[2][lan], font=('Consolas', 10))
     name = Entry(frame)
     name.insert(0, entry[2])
-    ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
+    ctgrlb = Label(frame, text=addtext[3][lan], font=('Consolas', 10))
     ctgr = Combobox(
         frame,
         state="readonly",
         values=settings['category']
     )
     ctgr.set(entry[6])
-    costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
+    costlb = Label(frame, text=addtext[4][lan], font=('Consolas', 10))
     cost = Entry(frame, width=6, justify=RIGHT)
     cost.insert(0, entry[3])
-    ratelb = Label(frame, text = "Rating:", font=('Consolas', 10))
+    ratelb = Label(frame, text=addtext[5][lan], font=('Consolas', 10))
     rate = Combobox(
         frame,
         width=2,
@@ -205,13 +214,13 @@ def edit_selected_row(settings):
         values=[5,4,3,2,1]
     )
     rate.set(entry[4])
-    desclb = Label(frame, text = "Desc: ", font=('Consolas', 10))
+    desclb = Label(frame, text=addtext[6][lan], font=('Consolas', 10))
     desc = Text(frame, height=5, width=10)
     desc.insert("1.0", entry[5])
-    rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
+    rmrklb = Label(frame, text=addtext[7][lan], font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
     rmrk.insert("1.0", entry[7])
-    editbtn = Button(frame, text="Save", command=on_submit)
+    editbtn = Button(frame, text=edittext[1][lan], command=on_submit)
 
     frame.grid(column=0, row=0, sticky='n')
 
@@ -235,10 +244,25 @@ def open_view():
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
+    texts=[
+        ["View your expense history", "지출 내역"],
+        ["Advanced", "고급"],
+        ["Delete", "삭제"],
+        ["Edit", "수정"],
+        ["Add", "추가"],
+        ["Date", "날짜"],
+        ["Label", "레이블"],
+        ["Category", "카테고리"],
+        ["Cost", "비용"],
+        ["Rating", "평점"],
+        ["Description", "상세"],
+        ["Remark", "비고"]
+    ]
+
     global table
     root = Tk()
-    root.title("View your entries")
-    root.geometry("1000x700+300+200")
+    root.title(texts[0][lan])
+    root.geometry("1000x390+300+200")
 
     frame = Frame(root, padding=15)
     frame.grid(column=0, row=0, sticky="nsew")
@@ -248,10 +272,10 @@ def open_view():
     root.rowconfigure(0, weight=1)
     frame.rowconfigure(1, weight=1)
 
-    advbtn = Button(frame, text="Advanced")
-    delbtn = Button(frame, text="Delete", command=lambda: delete_selected_row(root))
-    editbtn = Button(frame, text="Edit", command=lambda: edit_selected_row(settings))
-    addbtn = Button(frame, text="Add", command=open_add)
+    advbtn = Button(frame, text=texts[1][lan], state="disabled")
+    delbtn = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
+    editbtn = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(settings))
+    addbtn = Button(frame, text=texts[4][lan], command=open_add)
     advbtn.grid(column=1, row=0, sticky='e')
     delbtn.grid(column=1, row=2, sticky='e')
     editbtn.grid(column=1, row=2, sticky='e', padx=(10, 90))
@@ -279,13 +303,13 @@ def open_view():
     table.column("Remark", width=200)
 
     table.heading("ID", text="ID")
-    table.heading("Date", text="Date")
-    table.heading("Name", text="Name")
-    table.heading("Category", text="Category")
-    table.heading("Cost", text="Cost")
-    table.heading("Rating", text="Rating")
-    table.heading("Description", text="Description")
-    table.heading("Remark", text="Remark")
+    table.heading("Date", text=texts[5][lan])
+    table.heading("Name", text=texts[6][lan])
+    table.heading("Category", text=texts[7][lan])
+    table.heading("Cost", text=texts[8][lan])
+    table.heading("Rating", text=texts[9][lan])
+    table.heading("Description", text=texts[10][lan])
+    table.heading("Remark", text=texts[11][lan])
 
     rows = fetch_data()
     for row in rows:

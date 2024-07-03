@@ -7,6 +7,18 @@ from settings import lan
 import sqlite3
 import json
 
+texts = [
+        ["New expense", "새로운 지출"],
+        ["Date: ", "날짜: "],
+        ["Label: ", "레이블: "],
+        ["Category: ", "카테고리: "],
+        ["Cost: ", "비용: "],
+        ["Rating: ", "평점: "],
+        ["Desc: ", "상세: "],
+        ["Remark: ", "비고: "],
+        ["Add", "추가"]
+    ]
+
 def open_add():
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
@@ -36,18 +48,6 @@ def open_add():
         except Exception as e:
             print(e)
             messagebox.showerror("Error", e, parent=root)
-
-    texts = [
-        ["New expense", "새로운 지출"],
-        ["Date: ", "날짜: "],
-        ["Label: ", "레이블: "],
-        ["Category: ", "카테고리: "],
-        ["Cost: ", "비용: "],
-        ["Rating: ", "평점: "],
-        ["Desc: ", "상세: "],
-        ["Remark: ", "비고: "],
-        ["Add", "추가"]
-    ]
 
     root = Tk()
 
