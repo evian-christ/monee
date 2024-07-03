@@ -12,8 +12,8 @@ import sys
 settings = {
     "month_start_date": "1",
     "language": "English",
-    "category": ["Food", "Entertainment", "Transport", "Misc"],
-    "Budget": ["550", "150", "100", "100"]
+    "category": ["Food", "Entertainment", "Transport", "Other"],
+    "Budget": ["0", "0", "0", "0"]
 }
 
 if not os.path.exists('config.json'):
@@ -133,7 +133,7 @@ def del_category(root):
             json.dump(settings, config_file)
     else:
         messagebox.showerror(deltexts[2][lan], deltexts[3][lan], parent=root)
-        
+
 #=====================================
 
 def save_settings(day, language):
@@ -158,7 +158,10 @@ def open_settings():
         ["Save", "저장"],
         ["Category", "카테고리"],
         ["Categories: ", "카테고리:"],
-        ["Edit", "수정"]
+        ["Edit", "수정"],
+        ["Budget", "예산"],
+        ["Allocate budget for each category: ", "각 카테고리에 예산 배정: "],
+        ["Change", "수정"]
     ]
 
     global category_listbox
@@ -166,7 +169,10 @@ def open_settings():
     root = Toplevel()
 
     root.title(texts[0][lan])
-    root.geometry("333x337+800+300")
+    if lan==0:
+        root.geometry("333x337+800+300")
+    elif lan==1:
+        root.geometry("323x337+800+300")
     root.resizable(FALSE, FALSE)
 
     root.grab_set()
@@ -219,6 +225,30 @@ def open_settings():
 
     for i in settings['category']:
         category_listbox.insert(END, i)
+
+#=====================================
+
+    tab3 = Frame(notebook, borderwidth=2, relief="solid")
+    notebook.add(tab3, text=texts[8][lan])
+
+    budgetlb = Label(tab3, text=texts[9][lan])
+    budgetlb.grid(column=0, row=0, pady=(10,10), padx=(10,0), sticky=W)
+
+    budg_tv = Treeview(tab3, columns=("Category", "Budget"), show="headings", height=9)
+    budg_tv.grid(column=0, row=1, padx=(12, 0))
+
+    budg_tv.column("Category", width=190)
+    budg_tv.column("Budget", width=80)
+
+    budg_tv.heading("Category", text=texts[5][lan])
+    budg_tv.heading("Budget", text=texts[8][lan])
+
+    btn_edit = Button(tab3, text=texts[10][lan])
+    btn_edit.grid(column=0, row=2, sticky='e', pady=(10,10))
+
+    for n, i in enumerate(settings["category"]):
+        print(i, settings['Budget'][n])
+        #budg_tv.insert("", "end", values=(i, ))
 
 #=====================================
 
