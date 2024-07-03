@@ -125,7 +125,8 @@ def open_settings():
     root = Tk()
 
     root.title("Settings")
-    root.geometry("333x333+800+300")
+    root.geometry("333x337+800+300")
+    root.resizable(FALSE, FALSE)
 
     notebook = Notebook(root, padding=10)
     
@@ -141,8 +142,8 @@ def open_settings():
         values=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]
     )
     startday.set(settings['month_start_date'])
-    startdaylb.grid(column=0, row=0, sticky='w', padx=(20, 0))
-    startday.grid(column=1, row=0, sticky='e', padx=(80, 20), pady=(40, 10))
+    startdaylb.grid(column=0, row=0, sticky='w', padx=(30, 0), pady=(30, 10))
+    startday.grid(column=1, row=0, sticky='e', padx=(60, 30), pady=(30, 10))
 
     langlb = Label(tab1, text="Language")
     lang = Combobox(
@@ -152,11 +153,11 @@ def open_settings():
         values=["English", "한국어"]
     )
     lang.set(settings['language'])
-    langlb.grid(column=0, row=1, sticky='w', padx=(20, 0))
-    lang.grid(column=1, row=1, sticky='e', padx=(80, 20), pady=(20, 10))
+    langlb.grid(column=0, row=1, sticky='w', padx=(30, 0))
+    lang.grid(column=1, row=1, sticky='e', padx=(60, 30), pady=(20, 10))
 
     btn_save = Button(tab1, text="Save", command=lambda: save_settings(startday, lang))
-    btn_save.grid(column=1, row=3, sticky='e', pady=(125, 0), padx=(0, 20))
+    btn_save.grid(column=1, row=3, sticky='e', pady=(130, 0), padx=(0, 30))
 
 #=====================================
 
