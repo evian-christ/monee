@@ -47,12 +47,17 @@ def add_category():
 
     add_window = Tk()
 
-    add_window.title("Add new category")
+    cat_texts = [
+        ["New category", "새 카테고리"],
+        ["Add", "추가"]
+    ]
+
+    add_window.title(cat_texts[0][lan])
     add_window.geometry("260x65+1000+500")
     add_window.resizable(0, 0)
 
     category_entry = Entry(add_window)
-    category_add = Button(add_window, text="Add", command=add)
+    category_add = Button(add_window, text=cat_texts[1][lan], command=add)
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_add.grid(column=1, row=0)
@@ -60,6 +65,13 @@ def add_category():
 #=====================================
 
 def edit_category():
+    editexts=[
+        ["Error", "오류"],
+        ["Already exists!", "중복 오류"],
+        ["Edit", "수정"],
+        ["Confirm", "확인"]
+    ]
+
     selected = category_listbox.curselection()[0]
     if not selected:
         return
@@ -67,7 +79,7 @@ def edit_category():
     def edit():
         category_value = category_entry.get()
         if category_value in settings['category']:
-            messagebox.showerror("Error", "Already exists!", parent=edit_window)
+            messagebox.showerror(editexts[0][lan], editexts[1][lan], parent=edit_window)
             pass
         else:
             category_listbox.delete(selected, selected)
@@ -79,13 +91,13 @@ def edit_category():
 
     edit_window = Tk()
 
-    edit_window.title("Edit")
+    edit_window.title(editexts[2][lan])
     edit_window.geometry("260x65+1000+500")
     edit_window.resizable(0, 0)
 
     category_entry = Entry(edit_window)
     category_entry.insert(0, settings['category'][selected])
-    category_edit = Button(edit_window, text="Confirm", command=edit)
+    category_edit = Button(edit_window, text=editexts[3][lan], command=edit)
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_edit.grid(column=1, row=0)
@@ -95,7 +107,12 @@ def edit_category():
 def del_category(root):
     selected = category_listbox.curselection()[0]
 
-    confirm = messagebox.askyesno("Delete", "You sure bro?", parent=root)
+    deltexts=[
+        ["Delete", "삭제"],
+        ["Are you sure?", "삭제하시겠습니까?"]
+    ]
+
+    confirm = messagebox.askyesno(deltexts[0][lan], deltexts[1][lan], parent=root)
     if not confirm:
         return
 
@@ -120,11 +137,22 @@ def save_settings(day, language):
 #=====================================
 
 def open_settings():
+    texts=[
+        ["Settings", "설정"],
+        ["General", "일반"],
+        ["Start day of month", "월 기준 일자"],
+        ["Language", "언어"],
+        ["Save", "저장"],
+        ["Category", "카테고리"],
+        ["Categories: ", "카테고리:"],
+        ["Edit", "수정"]
+    ]
+
     global category_listbox
 
     root = Tk()
 
-    root.title("Settings")
+    root.title(texts[0][lan])
     root.geometry("333x337+800+300")
     root.resizable(FALSE, FALSE)
 
@@ -133,8 +161,8 @@ def open_settings():
 #=====================================
 
     tab1 = Frame(notebook, borderwidth=2, relief="solid")
-    notebook.add(tab1, text="General")
-    startdaylb = Label(tab1, text ="Start day of month")
+    notebook.add(tab1, text=texts[1][lan])
+    startdaylb = Label(tab1, text=texts[2][lan])
     startday = Combobox(
         tab1,
         width=2,
@@ -145,7 +173,7 @@ def open_settings():
     startdaylb.grid(column=0, row=0, sticky='w', padx=(30, 0), pady=(30, 10))
     startday.grid(column=1, row=0, sticky='e', padx=(60, 30), pady=(30, 10))
 
-    langlb = Label(tab1, text="Language")
+    langlb = Label(tab1, text=texts[3][lan])
     lang = Combobox(
         tab1,
         width=10,
@@ -156,16 +184,16 @@ def open_settings():
     langlb.grid(column=0, row=1, sticky='w', padx=(30, 0))
     lang.grid(column=1, row=1, sticky='e', padx=(60, 30), pady=(20, 10))
 
-    btn_save = Button(tab1, text="Save", command=lambda: save_settings(startday, lang))
+    btn_save = Button(tab1, text=texts[4][lan], command=lambda: save_settings(startday, lang))
     btn_save.grid(column=1, row=3, sticky='e', pady=(130, 0), padx=(0, 30))
 
 #=====================================
 
     tab2 = Frame(notebook, padding=(70, 30), borderwidth=2, relief="solid")
-    notebook.add(tab2, text="Category")
-    categorylb = Label(tab2, text="Categories: ")
+    notebook.add(tab2, text=texts[5][lan])
+    categorylb = Label(tab2, text=texts[6][lan])
     category_listbox = Listbox(tab2, selectmode=SINGLE)
-    category_edit = Button(tab2, text='edit', command=edit_category)
+    category_edit = Button(tab2, text=texts[7][lan], command=edit_category)
     category_add = Button(tab2, text="+", width=5, command=add_category)
     category_del = Button(tab2, text="-", width=5, command=lambda : del_category(root))
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
