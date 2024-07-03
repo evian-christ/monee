@@ -113,22 +113,27 @@ def edit_category(root):
 #=====================================
 
 def del_category(root):
-    selected = category_listbox.curselection()[0]
-
     deltexts=[
         ["Delete", "삭제"],
-        ["Are you sure?", "삭제하시겠습니까?"]
+        ["Are you sure?", "삭제하시겠습니까?"],
+        ["Error", "오류"],
+        ["Select a category!", "삭제할 카테고리를 선택하십시오"]
     ]
 
-    confirm = messagebox.askyesno(deltexts[0][lan], deltexts[1][lan], parent=root)
-    if not confirm:
-        return
+    if category_listbox.curselection():
+        selected = category_listbox.curselection()[0]
 
-    category_listbox.delete(selected, selected)
-    settings['category'].remove(settings['category'][selected])
-    with open('config.json', 'w') as config_file:
-        json.dump(settings, config_file)
+        confirm = messagebox.askyesno(deltexts[0][lan], deltexts[1][lan], parent=root)
+        if not confirm:
+            return
 
+        category_listbox.delete(selected, selected)
+        settings['category'].remove(settings['category'][selected])
+        with open('config.json', 'w') as config_file:
+            json.dump(settings, config_file)
+    else:
+        messagebox.showerror(deltexts[2][lan], deltexts[3][lan], parent=root)
+        
 #=====================================
 
 def save_settings(day, language):
