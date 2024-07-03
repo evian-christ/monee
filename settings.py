@@ -45,7 +45,7 @@ def add_category():
                 json.dump(settings, config_file)
             add_window.destroy()
 
-    add_window = Tk()
+    add_window = Toplevel()
 
     cat_texts = [
         ["New category", "새 카테고리"],
@@ -61,6 +61,8 @@ def add_category():
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_add.grid(column=1, row=0)
+
+    add_window.grab_set()
 
 #=====================================
 
@@ -89,7 +91,7 @@ def edit_category():
                 json.dump(settings, config_file)
             edit_window.destroy()
 
-    edit_window = Tk()
+    edit_window = Toplevel()
 
     edit_window.title(editexts[2][lan])
     edit_window.geometry("260x65+1000+500")
@@ -101,6 +103,8 @@ def edit_category():
 
     category_entry.grid(column=0, row=0, padx=20, pady=20)
     category_edit.grid(column=1, row=0)
+
+    edit_window.grab_set()
 
 #=====================================
 
@@ -150,11 +154,13 @@ def open_settings():
 
     global category_listbox
 
-    root = Tk()
+    root = Toplevel()
 
     root.title(texts[0][lan])
     root.geometry("333x337+800+300")
     root.resizable(FALSE, FALSE)
+
+    root.grab_set()
 
     notebook = Notebook(root, padding=10)
     
