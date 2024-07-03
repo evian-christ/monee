@@ -3,7 +3,7 @@ from tkinter.ttk import *
 from dateAndTime import *
 from add import open_add
 from view import open_view
-from settings import open_settings
+from settings import open_settings, lan
 
 import sqlite3
 
@@ -26,9 +26,8 @@ CREATE TABLE if not exists expenses
 #=====================================
 
 main = Tk()
-#main.grid_columnconfigure(0, weight=1)
 
-main.title("monee v0.0.1")
+main.title("m0nee v0.0.1")
 main.geometry("630x210+900+400")
 
 #=====================================
@@ -53,10 +52,17 @@ bar_time.create_rectangle(55,5,200,20, fill='grey')
 but = Frame(main)
 but.grid(column=0, row=4, columnspan=4, sticky='w')
 
-btn_add = Button(but, text = "New", command = open_add)
-btn_view = Button(but, text = "View", command = open_view)
-btn_stats = Button(but, text = "Stats", state=DISABLED)
-btn_settings = Button(but, text = "Settings", command = open_settings)
+texts = [
+    ["New", "추가"],
+    ["View", "내역"],
+    ["Stats", "통계"],
+    ["Settings", "설정"]
+]
+
+btn_add = Button(but, text = texts[0][lan], command = open_add)
+btn_view = Button(but, text = texts[1][lan], command = open_view)
+btn_stats = Button(but, text = texts[2][lan], state=DISABLED)
+btn_settings = Button(but, text = texts[3][lan], command = open_settings)
 
 btn_add.grid(column=0, row=4, pady=5, padx=(20, 10))
 btn_view.grid(column=1, row=4, pady=25, padx=10)

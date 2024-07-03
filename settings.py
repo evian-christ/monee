@@ -23,6 +23,13 @@ else:
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
+global lan
+
+if settings['language'] == "English":
+    lan = 0
+elif settings['language'] == "한국어":
+    lan = 1
+
 #=====================================
 
 def add_category():
@@ -150,7 +157,6 @@ def open_settings():
 
     btn_save = Button(tab1, text="Save", command=lambda: save_settings(startday, lang))
     btn_save.grid(column=1, row=3, sticky='e', pady=(125, 0), padx=(0, 20))
-    
 
 #=====================================
 
