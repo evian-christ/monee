@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import *
 from dateAndTime import *
+from settings import lan
 
 import sqlite3
 import json
@@ -35,39 +36,51 @@ def open_add():
         except Exception as e:
             messagebox.showerror("Error", e)
 
+    texts = [
+        ["New expense", "새로운 지출"],
+        ["Date: ", "날짜: "],
+        ["Label: ", "레이블: "],
+        ["Category: ", "카테고리: "],
+        ["Cost: ", "비용: "],
+        ["Rating: ", "평점: "],
+        ["Desc: ", "상세: "],
+        ["Remark: ", "비고: "],
+        ["Add", "추가"]
+    ]
+
     root = Tk()
 
-    root.title("Add New Entry")
+    root.title(texts[0][lan])
     root.geometry("260x380+900+350")
     root.resizable(0, 0)
 
     frame = Frame(root)
     
-    datelb = Label(frame, text = "Date: ", font=('Consolas', 10))
+    datelb = Label(frame, text=texts[1][lan], font=('Consolas', 10))
     date = Entry(frame)
     date.insert(0, today)
-    namelb = Label(frame, text = "Name: ", font=('Consolas', 10))
+    namelb = Label(frame, text=texts[2][lan], font=('Consolas', 10))
     name = Entry(frame)
-    ctgrlb = Label(frame, text = "Category: ", font=('Consolas', 10))
+    ctgrlb = Label(frame, text=texts[3][lan], font=('Consolas', 10))
     ctgr = Combobox(
         frame,
         state="readonly",
         values=settings['category']
     )
-    costlb = Label(frame, text = "Cost: ", font=('Consolas', 10))
+    costlb = Label(frame, text=texts[4][lan], font=('Consolas', 10))
     cost = Entry(frame, width=6, justify=RIGHT)
-    ratelb = Label(frame, text = "Rating:", font=('Consolas', 10))
+    ratelb = Label(frame, text=texts[5][lan], font=('Consolas', 10))
     rate = Combobox(
         frame,
         width=2,
         state="readonly",
         values=[5,4,3,2,1]
     )
-    desclb = Label(frame, text = "Desc: ", font=('Consolas', 10))
+    desclb = Label(frame, text=texts[6][lan], font=('Consolas', 10))
     desc = Text(frame, height=5, width=10)
-    rmrklb = Label(frame, text = "Remark: ", font=('Consolas', 10))
+    rmrklb = Label(frame, text=texts[7][lan], font=('Consolas', 10))
     rmrk = Text(frame, height=5, width=10)
-    addbtn = Button(frame, text="Add", command=on_submit)
+    addbtn = Button(frame, text=texts[8][lan], command=on_submit)
 
     frame.grid(column=0, row=0, sticky='n')
 

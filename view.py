@@ -6,6 +6,7 @@ from decimal import Decimal
 
 import sqlite3
 import json
+import numbers
 
 def fetch_data():
     dbc = sqlite3.connect('data.db')
@@ -289,8 +290,11 @@ def open_view():
 
     rows = fetch_data()
     for row in rows:
-        date_str = unixToStr(row[1])  # Convert Unix timestamp to readable date string
-        # Insert data into the Treeview, including the hidden ID
-        table.insert("", "end", values=(row[0], date_str, row[2], row[3], Decimal(row[4]).quantize(Decimal('0.01')), row[5], row[6], row[7]))
+        date_str = unixToStr(row[1])
+        if isinstance(row[4], numbers.Number):
+            cost = Decimal(row[4]).quantize(Decimal('0.01'))
+        else:
+            cost = row[4]
+        table.insert("", "end", values=(row[0], date_str, row[2], row[3], cost, row[5], row[6], row[7]))
 
     root.mainloop()
