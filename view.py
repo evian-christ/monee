@@ -5,23 +5,36 @@ from tkinter import messagebox
 from decimal import Decimal
 from add import texts as addtext
 from settings import lan
+from fetch import *
 
 import sqlite3
 import json
 import numbers
 
+with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
+
 def fetch_data():
+    sday = int(settings['month_start_date'])
+    if today_day < sday: # last month - this month
+        start_date=str(sday-1)+"-"+str(prev_month)+"-"+str(prev_year)
+        end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+    else: # this month - next month
+        start_date=str(sday-1)+"-"+str(otoday.month)+"-"+str(otoday.year)
+        end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
+
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
-    cursor.execute("SELECT id, date, name, category, cost, rate, desc, remark FROM expenses ORDER BY date DESC")
+    cursor.execute('''SELECT id, date, name, category, cost, rate, desc, remark
+                   FROM expenses 
+                   WHERE date > ? AND date < ?
+                    ORDER BY date DESC''',
+                   (strToUnix(start_date), strToUnix(end_date)))
     rows = cursor.fetchall()
     dbc.close()
     return rows
 
 def open_add(oroot):
-    with open('config.json', 'r') as config_file:
-        settings = json.load(config_file)
-
     def on_submit():
         try:
             date_value = strToUnix(date.get())
