@@ -76,18 +76,31 @@ spent = spent_total*600/budget_total
 
 #------------------------------------------
 
+sday = int(settings['month_start_date'])
+if today_day < sday: # last month - this month
+    start_date=str(sday)+"-"+str(prev_month)+"-"+str(prev_year)
+    end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+else: # this month - next month
+    start_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+    end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
+
+tspent = 600*(otoday.timestamp()-strToUnix(start_date))/(strToUnix(end_date)-strToUnix(start_date))
+
+#------------------------------------------
+
 bar_budget = Canvas(main, width=600, height=20)
 bar_budget.grid(column=0, row=2, sticky='w', columnspan=4)
 bar_budget.create_text(30,12,fill="black",text="£", font=('Arial 13 bold'))
 bar_budget.create_rectangle(55,5,600,20, fill='white')
 bar_budget.create_rectangle(55,5,spent,20, fill='grey')
-bar_budget.create_text(spent+5 if spent < 560 else 565,12,fill="black",text=f'{spent_total*100/budget_total:.1f}'+"%",anchor='w')
+bar_budget.create_text(spent+5 if spent < 560 else 565,12,fill="black",text=f'{spent/6:.1f}'+"%",anchor='w')
 
 bar_time = Canvas(main, width=600, height=20)
 bar_time.grid(column=0, row=3, sticky='w', columnspan=4, pady=(10, 0))
 bar_time.create_text(30,15,fill="black",text="🕓", font=('10'))
 bar_time.create_rectangle(55,5,600,20, fill='white')
-bar_time.create_rectangle(55,5,200,20, fill='grey')
+bar_time.create_rectangle(55,5,tspent,20, fill='grey')
+bar_time.create_text(tspent+5 if tspent < 560 else 565,12,fill="black",text=f'{tspent/6:.1f}'+"%",anchor='w')
 
 
 but = Frame(main)
