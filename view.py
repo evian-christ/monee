@@ -17,28 +17,36 @@ page = 0
 with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
-def fetch_data():
-    sday = int(settings['month_start_date'])
-    if today_day < sday: # last month - this month
-        start_date=str(sday-1)+"-"+str(prev_month)+"-"+str(prev_year)
-        end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
-    else: # this month - next month
-        start_date=str(sday-1)+"-"+str(otoday.month)+"-"+str(otoday.year)
-        end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
-
+def has_data(start_date, end_date):
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
-    cursor.execute('''SELECT id, date, name, category, cost, rate, desc, remark
-                   FROM expenses 
-                   WHERE date > ? AND date < ?
-                    ORDER BY date DESC''',
+    cursor.execute('''SELECT COUNT(*) FROM expenses 
+                   WHERE date > ? AND date < ?''',
                    (strToUnix(start_date), strToUnix(end_date)))
-    rows = cursor.fetchall()
+    count = cursor.fetchone()[0]
     dbc.close()
-    return rows
+    return count > 0
 
-def fetch_prev_month(direction):
+def update_buttons(btn_prev, btn_next):
+    sday = int(settings['month_start_date'])
+    if today_day < sday: # last month - this month
+        start_date = str(sday-1) + "-" + str(prev_month) + "-" + str(prev_year)
+        end_date = str(sday) + "-" + str(otoday.month) + "-" + str(otoday.year)
+    else: # this month - next month
+        start_date = str(sday-1) + "-" + str(otoday.month) + "-" + str(otoday.year)
+        end_date = str(sday) + "-" + str(next_month) + "-" + str(next_year)
+
+    start_date_prev = adjust_date(start_date, page - 1)
+    end_date_prev = adjust_date(end_date, page - 1)
+    start_date_next = adjust_date(start_date, page + 1)
+    end_date_next = adjust_date(end_date, page + 1)
+
+    btn_prev.config(state="normal" if has_data(start_date_prev, end_date_prev) else "disabled")
+    btn_next.config(state="normal" if has_data(start_date_next, end_date_next) else "disabled")
+
+def fetch_prev_month(direction, btn_prev, btn_next):
     global page
+    
     page += direction
 
     for item in table.get_children():
@@ -58,10 +66,10 @@ def fetch_prev_month(direction):
     dbc = sqlite3.connect('data.db')
     cursor = dbc.cursor()
     cursor.execute('''SELECT id, date, name, category, cost, rate, desc, remark
-                   FROM expenses 
-                   WHERE date > ? AND date < ?
+                FROM expenses 
+                WHERE date > ? AND date < ?
                     ORDER BY date DESC''',
-                   (strToUnix(start_date), strToUnix(end_date)))
+                (strToUnix(start_date), strToUnix(end_date)))
     rows = cursor.fetchall()
     dbc.close()
 
@@ -72,7 +80,8 @@ def fetch_prev_month(direction):
         else:
             cost = row[4]
         table.insert("", "end", values=(row[0], date_str, row[2], row[3], cost, row[5], row[6], row[7]))
-    
+
+    update_buttons(btn_prev, btn_next)
 
 def open_add(oroot):
     def on_submit():
@@ -355,8 +364,8 @@ def open_view():
     btn_edit.grid(column=1, row=2, sticky='e', padx=(10, 90))
     btn_add.grid(column=1, row=2, sticky='e', padx=(0, 180))
 
-    btn_prev = Button(frame, text="<", width=4, command=lambda: fetch_prev_month(-1))
-    btn_next = Button(frame, text=">", width=4, command=lambda: fetch_prev_month(1))
+    btn_prev = Button(frame, text="<", width=4, command=lambda: fetch_prev_month(-1, btn_prev, btn_next))
+    btn_next = Button(frame, text=">", width=4, command=lambda: fetch_prev_month(1, btn_prev, btn_next))
     btn_prev.grid(column=0, row=0, sticky='w', padx=(10, 0))
     btn_next.grid(column=0, row=0, sticky='w', padx=(55, 0))
 
@@ -391,13 +400,7 @@ def open_view():
     table.heading("Description", text=texts[10][lan])
     table.heading("Remark", text=texts[11][lan])
 
-    rows = fetch_data()
-    for row in rows:
-        date_str = unixToStr(row[1])
-        if isinstance(row[4], numbers.Number):
-            cost = Decimal(row[4]).quantize(Decimal('0.01'))
-        else:
-            cost = row[4]
-        table.insert("", "end", values=(row[0], date_str, row[2], row[3], cost, row[5], row[6], row[7]))
+    update_buttons(btn_prev, btn_next)
+    fetch_prev_month(0, btn_prev, btn_next)
 
     root.mainloop()
