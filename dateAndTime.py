@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import time
 
 otoday = datetime.now()
@@ -18,7 +19,7 @@ def unixToStr(u):
 def month_calc(month, year, direction):
     date = datetime(year, month, 1)
     result = [0,0]
-    
+
     if direction == 0:
         previous_month = date.replace(day=1) - timedelta(days=1)
         result[0] = int(previous_month.year)
@@ -32,3 +33,10 @@ def month_calc(month, year, direction):
         return
 
     return result
+
+def adjust_date(date_str, months):
+    date = datetime.strptime(date_str, "%d-%m-%Y")
+    adjusted_date = date + relativedelta(months=months)
+    adjusted_date_str = adjusted_date.strftime("%d-%m-%Y")
+    
+    return adjusted_date_str

@@ -11,6 +11,9 @@ import sqlite3
 import json
 import numbers
 
+global page
+page = 0
+
 with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
@@ -33,6 +36,43 @@ def fetch_data():
     rows = cursor.fetchall()
     dbc.close()
     return rows
+
+def fetch_prev_month(direction):
+    global page
+    page += direction
+
+    for item in table.get_children():
+        table.delete(item)
+
+    sday = int(settings['month_start_date'])
+    if today_day < sday: # last month - this month
+        start_date=str(sday-1)+"-"+str(prev_month)+"-"+str(prev_year)
+        end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+    else: # this month - next month
+        start_date=str(sday-1)+"-"+str(otoday.month)+"-"+str(otoday.year)
+        end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
+
+    start_date = adjust_date(start_date, page)
+    end_date = adjust_date(end_date, page)
+
+    dbc = sqlite3.connect('data.db')
+    cursor = dbc.cursor()
+    cursor.execute('''SELECT id, date, name, category, cost, rate, desc, remark
+                   FROM expenses 
+                   WHERE date > ? AND date < ?
+                    ORDER BY date DESC''',
+                   (strToUnix(start_date), strToUnix(end_date)))
+    rows = cursor.fetchall()
+    dbc.close()
+
+    for row in rows:
+        date_str = unixToStr(row[1])
+        if isinstance(row[4], numbers.Number):
+            cost = Decimal(row[4]).quantize(Decimal('0.01'))
+        else:
+            cost = row[4]
+        table.insert("", "end", values=(row[0], date_str, row[2], row[3], cost, row[5], row[6], row[7]))
+    
 
 def open_add(oroot):
     def on_submit():
@@ -315,8 +355,8 @@ def open_view():
     btn_edit.grid(column=1, row=2, sticky='e', padx=(10, 90))
     btn_add.grid(column=1, row=2, sticky='e', padx=(0, 180))
 
-    btn_prev = Button(frame, text="<", width=4)
-    btn_next = Button(frame, text=">", width=4)
+    btn_prev = Button(frame, text="<", width=4, command=lambda: fetch_prev_month(-1))
+    btn_next = Button(frame, text=">", width=4, command=lambda: fetch_prev_month(1))
     btn_prev.grid(column=0, row=0, sticky='w', padx=(10, 0))
     btn_next.grid(column=0, row=0, sticky='w', padx=(55, 0))
 
