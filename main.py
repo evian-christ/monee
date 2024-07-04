@@ -38,8 +38,11 @@ main.geometry("630x210+900+400")
 
 #=====================================
 
-if lan == 1:
+if lan == 1 or lan == 0:
     with open("proverbs_kor.txt", "r", encoding='utf-8') as f:
+        proverbs = (f.read()).split("\n")
+elif lan == 0:
+    with open("proverbs_eng.txt", "r", encoding='utf-8') as f:
         proverbs = (f.read()).split("\n")
 
 tday = Label(main, text=today)
@@ -55,10 +58,10 @@ for i in settings['budget']:
 
 sday = int(settings['month_start_date'])
 if today_day < sday: # last month - this month
-    start_date=str(sday-1)+"-"+str(prev_month)+"-"+str(prev_year)
+    start_date=str(sday)+"-"+str(prev_month)+"-"+str(prev_year)
     end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
 else: # this month - next month
-    start_date=str(sday-1)+"-"+str(otoday.month)+"-"+str(otoday.year)
+    start_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
     end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
 
 dbc = sqlite3.connect('data.db')
@@ -66,7 +69,7 @@ cursor = dbc.cursor()
 cursor.execute('''SELECT id, date, cost
             FROM expenses 
             WHERE date > ? AND date < ?''',
-            (strToUnix(start_date), strToUnix(end_date)))
+            (strToUnix(start_date)-86400, strToUnix(end_date)))
 rows = cursor.fetchall()
 dbc.close()
 
@@ -74,7 +77,10 @@ spent_total = 0
 for row in rows:
     spent_total += row[2]
 
-spent = spent_total*600/budget_total
+if budget_total > 0:
+    spent = spent_total*600/budget_total
+else:
+    spent = 100
 
 #------------------------------------------
 

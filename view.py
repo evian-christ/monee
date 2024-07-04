@@ -22,7 +22,7 @@ def has_data(start_date, end_date):
     cursor = dbc.cursor()
     cursor.execute('''SELECT COUNT(*) FROM expenses 
                    WHERE date > ? AND date < ?''',
-                   (strToUnix(start_date), strToUnix(end_date)))
+                   (strToUnix(start_date)-86400, strToUnix(end_date)))
     count = cursor.fetchone()[0]
     dbc.close()
     return count > 0
@@ -54,10 +54,10 @@ def fetch_prev_month(direction, btn_prev, btn_next, lbl_cur):
 
     sday = int(settings['month_start_date'])
     if today_day < sday: # last month - this month
-        start_date=str(sday-1)+"-"+str(prev_month)+"-"+str(prev_year)
+        start_date=str(sday)+"-"+str(prev_month)+"-"+str(prev_year)
         end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
     else: # this month - next month
-        start_date=str(sday-1)+"-"+str(otoday.month)+"-"+str(otoday.year)
+        start_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
         end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
 
     start_date = adjust_date(start_date, page)
@@ -69,7 +69,7 @@ def fetch_prev_month(direction, btn_prev, btn_next, lbl_cur):
                 FROM expenses 
                 WHERE date > ? AND date < ?
                     ORDER BY date DESC''',
-                (strToUnix(start_date), strToUnix(end_date)))
+                (strToUnix(start_date)-86400, strToUnix(end_date)))
     rows = cursor.fetchall()
     dbc.close()
 
