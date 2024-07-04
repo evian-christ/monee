@@ -293,14 +293,22 @@ def open_view():
     root.rowconfigure(0, weight=1)
     frame.rowconfigure(1, weight=1)
 
-    advbtn = Button(frame, text=texts[1][lan], state="disabled")
-    delbtn = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
-    editbtn = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings))
-    addbtn = Button(frame, text=texts[4][lan], command=lambda: open_add(root))
-    advbtn.grid(column=1, row=0, sticky='e')
-    delbtn.grid(column=1, row=2, sticky='e')
-    editbtn.grid(column=1, row=2, sticky='e', padx=(10, 90))
-    addbtn.grid(column=1, row=2, sticky='e', padx=(0, 180))
+    btn_advc = Button(frame, text=texts[1][lan], state="disabled") # feature not implemented yet
+    btn_del = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
+    btn_edit = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings))
+    btn_add = Button(frame, text=texts[4][lan], command=lambda: open_add(root))
+    btn_advc.grid(column=1, row=0, sticky='e')
+    btn_del.grid(column=1, row=2, sticky='e')
+    btn_edit.grid(column=1, row=2, sticky='e', padx=(10, 90))
+    btn_add.grid(column=1, row=2, sticky='e', padx=(0, 180))
+
+    btn_prev = Button(frame, text="<", width=4)
+    btn_next = Button(frame, text=">", width=4)
+    btn_prev.grid(column=0, row=0, sticky='w', padx=(10, 0))
+    btn_next.grid(column=0, row=0, sticky='w', padx=(55, 0))
+
+    lbl_cur = Label(frame, text="Current Month", font=(30))
+    lbl_cur.grid(column=0, row=0, sticky='w', padx=(100, 0))
 
     table = Treeview(frame, columns=
                      ("ID", "Date", "Name", "Category", "Cost", "Rating", "Description", "Remark"),
