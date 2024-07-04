@@ -6,6 +6,7 @@ from view import open_view
 from settings import open_settings, lan
 from fetch import *
 
+import random
 import json
 import sqlite3
 
@@ -37,17 +38,20 @@ main.geometry("630x210+900+400")
 
 #=====================================
 
+if lan == 1:
+    with open("proverbs_kor.txt", "r", encoding='utf-8') as f:
+        proverbs = (f.read()).split("\n")
+
 tday = Label(main, text=today)
 tday.grid(column=0, row=0, pady=(15, 5), padx=20, sticky='w')
-summary = Label(main, text="summary")
-summary.grid(column=0, row=1, pady=(5,20), padx=20, sticky='w')
+summary = Label(main, text=random.choice(proverbs), font=("Arial", 11))
+summary.grid(column=0, row=1, pady=(6,19), padx=18, sticky='w')
 
 #-----------------------------------------
 
 budget_total = 0
 for i in settings['budget']:
     budget_total += int(i)
-print(budget_total)
 
 sday = int(settings['month_start_date'])
 if today_day < sday: # last month - this month
@@ -69,8 +73,6 @@ dbc.close()
 spent_total = 0
 for row in rows:
     spent_total += row[2]
-
-print(spent_total, "/", budget_total)
 
 spent = spent_total*600/budget_total
 
