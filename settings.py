@@ -32,7 +32,7 @@ elif settings['language'] == "한국어":
 
 #=====================================
 
-def add_category():
+def add_category(root):
     def add():
         category_value = category_entry.get()
         if category_value in settings['category']:
@@ -44,7 +44,7 @@ def add_category():
             settings['budget'].append(0)
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
-            add_window.destroy()
+            on_closing()
 
     add_window = Toplevel()
 
@@ -64,6 +64,12 @@ def add_category():
     category_add.grid(column=1, row=0)
 
     add_window.grab_set()
+
+    def on_closing():
+        root.grab_set()
+        add_window.destroy()
+    
+    add_window.protocol("WM_DELETE_WINDOW", on_closing)
 
 #=====================================
 
@@ -87,7 +93,7 @@ def edit_category(root):
             settings['category'][selected] = category_value
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
-            edit_window.destroy()
+            on_closing()
 
     if category_listbox.curselection():
         selected = category_listbox.curselection()[0]
@@ -106,6 +112,12 @@ def edit_category(root):
         category_edit.grid(column=1, row=0)
 
         edit_window.grab_set()
+
+        def on_closing():
+            root.grab_set()
+            edit_window.destroy()
+        
+        edit_window.protocol("WM_DELETE_WINDOW", on_closing)
     else:
         messagebox.showerror(editexts[0][lan], editexts[4][lan], parent=root)
     
@@ -182,7 +194,7 @@ def change_budget(root):
             settings['budget'][index] = budget_value
             with open('config.json', 'w') as config_file:
                 json.dump(settings, config_file)
-            change_window.destroy()
+            on_closing()
 
     if budg_tv.selection():
         id = budg_tv.selection()[0]
@@ -203,6 +215,12 @@ def change_budget(root):
         category_edit.grid(column=1, row=0)
 
         change_window.grab_set()
+
+        def on_closing():
+            root.grab_set()
+            change_window.destroy()
+        
+        change_window.protocol("WM_DELETE_WINDOW", on_closing)
     else:
         messagebox.showerror(changetexts[0][lan], changetexts[4][lan], parent=root)
 
@@ -277,7 +295,7 @@ def open_settings():
     categorylb = Label(tab2, text=texts[6][lan])
     category_listbox = Listbox(tab2, selectmode=SINGLE)
     category_edit = Button(tab2, text=texts[7][lan], command=lambda: edit_category(root))
-    category_add = Button(tab2, text="+", width=5, command=add_category)
+    category_add = Button(tab2, text="+", width=5, command=lambda: add_category(root))
     category_del = Button(tab2, text="-", width=5, command=lambda : del_category(root))
     categorylb.grid(column=0, row=0, sticky='w', pady=5)
     category_listbox.grid(column=0, row=1, columnspan=3, sticky='nswe')

@@ -18,7 +18,7 @@ def fetch_data():
     dbc.close()
     return rows
 
-def open_add():
+def open_add(oroot):
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
@@ -43,12 +43,10 @@ def open_add():
             print(c.lastrowid)
             dbc.close()
 
-            root.destroy()
-            print("added succesfully!")
-
             date_str = unixToStr(date_value)
             table.insert("", "0", values=(c.lastrowid, date_str, name_value, ctgr_value, cost_value, rate_value, desc_value, rmrk_value))
-        
+
+            on_closing()
         except Exception as e:
             messagebox.showerror("Error", e, parent=root)
 
@@ -106,7 +104,11 @@ def open_add():
     rmrk.grid(column=1, row=6, columnspan=3, rowspan=2, pady=10, sticky='we')
     addbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
 
-    root.mainloop()
+    def on_closing():
+        oroot.grab_set()
+        root.destroy()
+    
+    root.protocol("WM_DELETE_WINDOW", on_closing)
 
 def delete_selected_row(root):
     
@@ -171,8 +173,7 @@ def edit_selected_row(oroot, settings):
                 table.item(item, values=(entry_id, unixToStr(date_value), name_value, ctgr_value,
                                          cost_value, rate_value, desc_value, rmrk_value))
 
-            root.destroy()
-            print("edited succesfully!")
+            on_closing()
         
         except Exception as e:
             messagebox.showerror("Error", e)
@@ -250,6 +251,12 @@ def edit_selected_row(oroot, settings):
         rmrklb.grid(column=0, row=6, padx=10, pady=10, sticky='nw')
         rmrk.grid(column=1, row=6, columnspan=3, rowspan=2, pady=10, sticky='we')
         editbtn.grid(column=1, row=8, pady=5, columnspan=2, sticky='w')
+
+        def on_closing():
+            oroot.grab_set()
+            root.destroy()
+        
+        root.protocol("WM_DELETE_WINDOW", on_closing)
     else:
         messagebox.showerror(edittext[2][lan], edittext[3][lan], parent=oroot)
 
@@ -289,7 +296,7 @@ def open_view():
     advbtn = Button(frame, text=texts[1][lan], state="disabled")
     delbtn = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
     editbtn = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings))
-    addbtn = Button(frame, text=texts[4][lan], command=open_add)
+    addbtn = Button(frame, text=texts[4][lan], command=lambda: open_add(root))
     advbtn.grid(column=1, row=0, sticky='e')
     delbtn.grid(column=1, row=2, sticky='e')
     editbtn.grid(column=1, row=2, sticky='e', padx=(10, 90))
