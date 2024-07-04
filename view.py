@@ -44,7 +44,7 @@ def update_buttons(btn_prev, btn_next):
     btn_prev.config(state="normal" if has_data(start_date_prev, end_date_prev) else "disabled")
     btn_next.config(state="normal" if has_data(start_date_next, end_date_next) else "disabled")
 
-def fetch_prev_month(direction, btn_prev, btn_next):
+def fetch_prev_month(direction, btn_prev, btn_next, lbl_cur):
     global page
     
     page += direction
@@ -81,7 +81,24 @@ def fetch_prev_month(direction, btn_prev, btn_next):
             cost = row[4]
         table.insert("", "end", values=(row[0], date_str, row[2], row[3], cost, row[5], row[6], row[7]))
 
+    lbl_cur.config(text=cur_budget_month())
     update_buttons(btn_prev, btn_next)
+
+def cur_budget_month():
+    global page
+
+    sday = int(settings['month_start_date'])
+    if today_day < sday: # last month - this month
+        start_date=str(sday)+"-"+str(prev_month)+"-"+str(prev_year)
+        end_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+    else: # this month - next month
+        start_date=str(sday)+"-"+str(otoday.month)+"-"+str(otoday.year)
+        end_date=str(sday)+"-"+str(next_month)+"-"+str(next_year)
+
+    start_date = adjust_date(start_date, page)
+    end_date = adjust_date(end_date, page)
+
+    return start_date + " ~ " + end_date
 
 def open_add(oroot):
     def on_submit():
@@ -364,12 +381,12 @@ def open_view():
     btn_edit.grid(column=1, row=2, sticky='e', padx=(10, 90))
     btn_add.grid(column=1, row=2, sticky='e', padx=(0, 180))
 
-    btn_prev = Button(frame, text="<", width=4, command=lambda: fetch_prev_month(-1, btn_prev, btn_next))
-    btn_next = Button(frame, text=">", width=4, command=lambda: fetch_prev_month(1, btn_prev, btn_next))
+    btn_prev = Button(frame, text="<", width=4, command=lambda: fetch_prev_month(-1, btn_prev, btn_next, lbl_cur))
+    btn_next = Button(frame, text=">", width=4, command=lambda: fetch_prev_month(1, btn_prev, btn_next, lbl_cur))
     btn_prev.grid(column=0, row=0, sticky='w', padx=(10, 0))
     btn_next.grid(column=0, row=0, sticky='w', padx=(55, 0))
 
-    lbl_cur = Label(frame, text="Current Month", font=(30))
+    lbl_cur = Label(frame, text=cur_budget_month(), font=(30))
     lbl_cur.grid(column=0, row=0, sticky='w', padx=(100, 0))
 
     table = Treeview(frame, columns=
@@ -401,6 +418,6 @@ def open_view():
     table.heading("Remark", text=texts[11][lan])
 
     update_buttons(btn_prev, btn_next)
-    fetch_prev_month(0, btn_prev, btn_next)
+    fetch_prev_month(0, btn_prev, btn_next, lbl_cur)
 
     root.mainloop()

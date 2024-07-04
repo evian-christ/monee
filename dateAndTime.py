@@ -6,6 +6,11 @@ otoday = datetime.now()
 today = datetime.now().strftime("%d-%m-%Y")
 today_day = datetime.now().day
 
+#---------for test: manipulate "today"--------
+#otoday = datetime.now().replace(day=23)
+#today=otoday.strftime("%d-%m-%Y")
+#today_day = otoday.day
+
 def strToUnix(s):
     return time.mktime(datetime.strptime(s, "%d-%m-%Y").timetuple())
 
