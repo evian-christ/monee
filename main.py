@@ -31,6 +31,7 @@ main = Tk()
 main.title("m0nee v0.0.1")
 main.geometry("630x210+900+400")
 main.resizable("false", "false")
+main.iconbitmap('icon.ico')
 
 # Load proverbs based on language setting
 if lan == 0:
@@ -100,7 +101,7 @@ def update_ui():
     rows = cursor.fetchall()
     
     spent_total = sum(row[2] for row in rows)
-    spent = spent_total * 545 / budget_total if budget_total > 0 else 55
+    spent = spent_total * 545 / budget_total if budget_total > 0 else 0
     spent_figure = spent / 5.45 if budget_total > 0 else 0
 
     tspent = 545 * (otoday.timestamp() - strToUnix(start_date)) / (strToUnix(end_date) - strToUnix(start_date))
