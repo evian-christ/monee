@@ -177,7 +177,7 @@ def budget_tab_refresh(event, budg_tv):
 def change_budget(root):
     changetexts=[
         ["Error", "오류"],
-        ["Already exists!", "중복 오류"],
+        ["Input value must be a number", "숫자 외에 입력값"],
         ["Edit", "수정"],
         ["Confirm", "확인"],
         ["Select an item!", "선택한 항목이 없습니다"]
@@ -185,8 +185,8 @@ def change_budget(root):
     
     def change():
         budget_value = budget_entry.get()
-        if isinstance(budget_value, int):
-            messagebox.showerror(changetexts[0][lan], changetexts[1][lan], parent=edit_window)
+        if not budget_value or not budget_value.isdigit():
+            messagebox.showerror(changetexts[0][lan], changetexts[1][lan], parent=change_window)
             pass
         else:
             selected_item = budg_tv.selection()[0]

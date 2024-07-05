@@ -271,6 +271,7 @@
   ('pprint',
    'C:\\Users\\chank\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\pprint.py',
    'PYMODULE'),
+  ('proverbs', 'C:\\Users\\chank\\Desktop\\monee\\proverbs.py', 'PYMODULE'),
   ('py_compile',
    'C:\\Users\\chank\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\py_compile.py',
    'PYMODULE'),

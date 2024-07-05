@@ -34,9 +34,9 @@ main.resizable("false", "false")
 
 # Load proverbs based on language setting
 if lan == 0:
-        proverbs = proverbs_eng
+    proverbs = proverbs_eng
 elif lan == 1:
-        proverbs = proverbs_kor
+    proverbs = proverbs_kor
 
 # Initialize labels and canvases
 tday = Label(main, text=today, font=("Arial", 11))
@@ -108,14 +108,14 @@ def update_ui():
     bar_budget.delete("all")
     bar_budget.create_text(30, 12, fill="black", text="£", font=('Arial 13 bold'))
     bar_budget.create_rectangle(55, 5, 600, 20, fill='white')
-    bar_budget.create_rectangle(55, 5, spent, 20, fill='grey')
-    bar_budget.create_text(spent + 5 if spent < 560 else 565, 12, fill="black", text=f'{spent_figure:.1f}%', anchor='w')
+    bar_budget.create_rectangle(55, 5, spent if spent < 600 else 600, 20, fill='grey')
+    bar_budget.create_text(spent + 5 if spent < 555 else 555, 12, fill="black", text=f'{spent_figure:.1f}%', anchor='w')
 
     bar_time.delete("all")
     bar_time.create_text(30, 15, fill="black", text="🕓", font=('10'))
     bar_time.create_rectangle(55, 5, 600, 20, fill='white')
-    bar_time.create_rectangle(55, 5, tspent, 20, fill='grey')
-    bar_time.create_text(tspent + 5 if tspent < 560 else 565, 12, fill="black", text=f'{tspent / 6:.1f}%', anchor='w')
+    bar_time.create_rectangle(55, 5, tspent if tspent < 600 else 600, 20, fill='grey')
+    bar_time.create_text(tspent + 5 if tspent < 555 else 555, 12, fill="black", text=f'{tspent / 6:.1f}%', anchor='w')
 
 update_ui()  # Initial UI update
 
