@@ -13,7 +13,8 @@ settings = {
     "month_start_date": "1",
     "language": "English",
     "category": ["Food", "Leisure", "Transportation", "Other"],
-    "budget": ["0", "0", "0", "0"]
+    "budget": ["0", "0", "0", "0"],
+    "ini_setting": "1"
 }
 
 if not os.path.exists('config.json'):

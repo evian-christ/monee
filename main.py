@@ -29,6 +29,7 @@ CREATE TABLE if not exists expenses
 main = Tk()
 main.title("m0nee v0.0.1")
 main.geometry("630x210+900+400")
+main.resizable("false", "false")
 
 # Load proverbs based on language setting
 if lan == 1:
