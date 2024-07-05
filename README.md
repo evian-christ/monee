@@ -12,7 +12,7 @@
 
 ## Installation
 
-1. Download the latest release from the [Releases](https://github.com/evian-christ/m0nee/releases) page.
+1. Download the latest release from the [Releases](Releases) page.
 2. Extract the downloaded zip file to your desired location.
 3. Run `m0nee.exe` to start the application.
 
