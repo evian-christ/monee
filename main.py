@@ -10,10 +10,6 @@ import random
 import json
 import sqlite3
 
-# Load settings and initialize database
-with open('config.json', 'r') as config_file:
-    settings = json.load(config_file)
-
 dbc = sqlite3.connect('data.db')
 
 dbc.execute('''
@@ -35,16 +31,16 @@ main.title("m0nee v0.0.1")
 main.geometry("630x210+900+400")
 
 # Load proverbs based on language setting
-if lan == 1 or lan == 0:
+if lan == 1:
     with open("proverbs_kor.txt", "r", encoding='utf-8') as f:
         proverbs = (f.read()).split("\n")
-else:
+elif lan == 0:
     with open("proverbs_eng.txt", "r", encoding='utf-8') as f:
         proverbs = (f.read()).split("\n")
 
 # Initialize labels and canvases
-tday = Label(main, text=today)
-tday.grid(column=0, row=0, pady=(15, 5), padx=20, sticky='w')
+tday = Label(main, text=today, font=("Arial", 11))
+tday.grid(column=0, row=0, pady=(15, 5), padx=19, sticky='w')
 
 summary = Label(main, text=random.choice(proverbs), font=("Arial", 11))
 summary.grid(column=0, row=1, pady=(6,19), padx=18, sticky='w')
@@ -68,17 +64,20 @@ texts = [
 btn_add = Button(but, text=texts[0][lan], command=lambda: open_add(update_ui))
 btn_view = Button(but, text=texts[1][lan], command=lambda: open_view(update_ui))
 btn_stats = Button(but, text=texts[2][lan], state=DISABLED)
-btn_settings = Button(but, text=texts[3][lan], command=open_settings)
-btn_refresh = Button(but, text="↻", command=lambda: update_ui())
+btn_settings = Button(but, text=texts[3][lan], command=lambda: open_settings(update_ui))
+btn_refresh = Button(but, text="↻", command=lambda: update_ui(), width=3)
 
 btn_add.grid(column=0, row=4, pady=5, padx=(20, 10))
 btn_view.grid(column=1, row=4, pady=25, padx=10)
 btn_stats.grid(column=2, row=4, pady=5, padx=10)
 btn_settings.grid(column=3, row=4, pady=5, padx=10)
-btn_refresh.grid(column=4, row=4, sticky='e')
+btn_refresh.grid(column=4, row=4, sticky='e', padx=(180, 0))
 
 # Function to update UI components
 def update_ui():
+    with open('config.json', 'r') as config_file:
+        settings = json.load(config_file)
+
     # Update proverbs
     summary.config(text=random.choice(proverbs))
     

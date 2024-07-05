@@ -12,7 +12,7 @@ import sys
 settings = {
     "month_start_date": "1",
     "language": "English",
-    "category": ["Food", "Entertainment", "Transport", "Other"],
+    "category": ["Food", "Leisure", "Transportation", "Other"],
     "budget": ["0", "0", "0", "0"]
 }
 
@@ -228,7 +228,7 @@ def change_budget(root):
 
 #=====================================
 
-def open_settings():
+def open_settings(callback):
     texts=[
         ["Settings", "설정"],
         ["General", "일반"],
@@ -332,9 +332,9 @@ def open_settings():
 
     notebook.grid(sticky='nswe')
 
-    def restart():
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
+    def on_close():
+        callback()
+        root.destroy()
 
-    root.protocol("WM_DELETE_WINDOW", restart)
+    root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
