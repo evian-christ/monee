@@ -5,6 +5,7 @@ from add import open_add
 from view import open_view
 from settings import open_settings, lan
 from fetch import *
+from proverbs import *
 
 import random
 import json
@@ -32,12 +33,10 @@ main.geometry("630x210+900+400")
 main.resizable("false", "false")
 
 # Load proverbs based on language setting
-if lan == 1:
-    with open("proverbs_kor.txt", "r", encoding='utf-8') as f:
-        proverbs = (f.read()).split("\n")
-elif lan == 0:
-    with open("proverbs_eng.txt", "r", encoding='utf-8') as f:
-        proverbs = (f.read()).split("\n")
+if lan == 0:
+        proverbs = proverbs_eng
+elif lan == 1:
+        proverbs = proverbs_kor
 
 # Initialize labels and canvases
 tday = Label(main, text=today, font=("Arial", 11))
@@ -120,4 +119,5 @@ def update_ui():
 
 update_ui()  # Initial UI update
 
+main.grab_set()
 main.mainloop()

@@ -11,7 +11,7 @@ import sys
 
 settings = {
     "month_start_date": "1",
-    "language": "English",
+    "language": "한국어",
     "category": ["Food", "Leisure", "Transportation", "Other"],
     "budget": ["0", "0", "0", "0"],
     "ini_setting": "1"
