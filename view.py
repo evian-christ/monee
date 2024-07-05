@@ -100,7 +100,7 @@ def cur_budget_month():
 
     return start_date + " ~ " + end_date
 
-def open_add(oroot):
+def open_add(oroot, callback):
     def on_submit():
         try:
             date_value = strToUnix(date.get())
@@ -124,6 +124,8 @@ def open_add(oroot):
 
             date_str = unixToStr(date_value)
             table.insert("", "0", values=(c.lastrowid, date_str, name_value, ctgr_value, cost_value, rate_value, desc_value, rmrk_value))
+
+            callback()
 
             on_closing()
         except Exception as e:
@@ -189,7 +191,7 @@ def open_add(oroot):
     
     root.protocol("WM_DELETE_WINDOW", on_closing)
 
-def delete_selected_row(root):
+def delete_selected_row(root, callback):
     
     if table.selection():
         selected_item = table.selection()
@@ -210,6 +212,8 @@ def delete_selected_row(root):
         dbc.commit()
         dbc.close()
 
+        callback()
+
         # Remove from Treeview
         table.delete(item)
     else:
@@ -219,7 +223,7 @@ def delete_selected_row(root):
         ]
         messagebox.showerror(deltexts[0][lan], deltexts[1][lan], parent=root)
 
-def edit_selected_row(oroot, settings):
+def edit_selected_row(oroot, settings, callback):
     edittext=[
         ["Edit ", "수정 "],
         ["Save", "저장"],
@@ -251,6 +255,8 @@ def edit_selected_row(oroot, settings):
                 item = selected_item[0]
                 table.item(item, values=(entry_id, unixToStr(date_value), name_value, ctgr_value,
                                          cost_value, rate_value, desc_value, rmrk_value))
+
+            callback()
 
             on_closing()
         
@@ -339,7 +345,7 @@ def edit_selected_row(oroot, settings):
     else:
         messagebox.showerror(edittext[2][lan], edittext[3][lan], parent=oroot)
 
-def open_view():
+def open_view(callback):
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
@@ -373,9 +379,9 @@ def open_view():
     frame.rowconfigure(1, weight=1)
 
     btn_advc = Button(frame, text=texts[1][lan], state="disabled") # feature not implemented yet
-    btn_del = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root))
-    btn_edit = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings))
-    btn_add = Button(frame, text=texts[4][lan], command=lambda: open_add(root))
+    btn_del = Button(frame, text=texts[2][lan], command=lambda: delete_selected_row(root, callback))
+    btn_edit = Button(frame, text=texts[3][lan], command=lambda: edit_selected_row(root, settings, callback))
+    btn_add = Button(frame, text=texts[4][lan], command=lambda: open_add(root, callback))
     btn_advc.grid(column=1, row=0, sticky='e')
     btn_del.grid(column=1, row=2, sticky='e')
     btn_edit.grid(column=1, row=2, sticky='e', padx=(10, 90))

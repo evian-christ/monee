@@ -332,4 +332,9 @@ def open_settings():
 
     notebook.grid(sticky='nswe')
 
+    def restart():
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+
+    root.protocol("WM_DELETE_WINDOW", restart)
     root.mainloop()

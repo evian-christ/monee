@@ -19,7 +19,7 @@ texts = [
         ["Add", "추가"]
     ]
 
-def open_add():
+def open_add(callback):
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
 
@@ -42,9 +42,9 @@ def open_add():
             dbc.commit()
             dbc.close()
 
+            callback()
+
             root.destroy()
-            print("added succesfully!")
-        
         except Exception as e:
             messagebox.showerror("Error", e, parent=root)
 
