@@ -19,6 +19,13 @@ texts = [
         ["Add", "추가"]
     ]
 
+errormsg = [
+    ["Label must be between 1 and 64 characters.", "레이블: 최소 1글자 ~ 최대 64자"],
+    ["Category must be selected.", "카테고리: 필수 항목"],
+    ["Rating must be selected.", "평점: 필수 항목"],
+    ["Cost must be a real number.", "비용: 숫자"],
+]
+
 def open_add(callback):
     with open('config.json', 'r') as config_file:
         settings = json.load(config_file)
@@ -33,8 +40,19 @@ def open_add(callback):
             desc_value = desc.get("1.0", END).strip()
             rmrk_value = rmrk.get("1.0", END).strip()
 
-            dbc = sqlite3.connect('data.db')
+            # Validation
+            if len(name_value) == 0 or len(name_value) > 64:
+                raise ValueError(errormsg[0][lan])
+            if not ctgr_value:
+                raise ValueError(errormsg[1][lan])
+            if not rate_value:
+                raise ValueError(errormsg[2][lan])
+            if not cost_value or not cost_value.replace('.', '', 1).isdigit():
+                raise ValueError(errormsg[3][lan])
 
+            cost_value = float(cost_value)
+
+            dbc = sqlite3.connect('data.db')
             dbc.execute("INSERT INTO expenses VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)",
                         (date_value, name_value, cost_value, rate_value,
                         desc_value, ctgr_value, rmrk_value))
