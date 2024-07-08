@@ -1,6 +1,6 @@
 # m0nee v0.1.0
 
-**m0nee** is a personal finance management tool designed to help you track and manage your expenses efficiently. With features like budget tracking, expense categorization, and insightful statistics, m0nee aims to make financial planning simpler and more effective.
+**m0nee** is a personal expense tracker designed to help you track and manage your expenses efficiently. With features like budget tracking, expense categorization, and insightful statistics, m0nee aims to make financial planning simpler and more effective.
 
 ## Note
 This program is still in its early development stage, so there may be bugs, errors, or potential data loss.
