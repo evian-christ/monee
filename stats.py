@@ -26,7 +26,7 @@ def open_stats():
 
     root = Toplevel()
     root.title(texts[0][lan])
-    root.geometry("700x700+500+300")
+    root.geometry("800x500+500+300")
     root.resizable(TRUE, TRUE) # true for now
 
     root.grab_set()
@@ -35,11 +35,17 @@ def open_stats():
 
 #=============================================
 
+    def _on_mousewheel(event):
+        if root.tk.call("tk", "windowingsystem") == "aqua":
+            budget_graph.yview_scroll(-2 * (event.delta), "units")
+        else:
+            budget_graph.yview_scroll(-2 * (event.delta // 120), "units")
+
     tab1 = Frame(notebook, borderwidth=2, relief="solid")
     notebook.add(tab1, text=texts[1][lan], padding=10)
 
-    budget_table = Treeview(tab1, columns=("Category", "Spent"), show="headings")
-    budget_table.grid(column=0, row=0)
+    budget_table = Treeview(tab1, columns=("Category", "Spent"), show="headings", height=13)
+    budget_table.grid(column=0, row=0, padx=20)
     budget_table.column("Category", width=190)
     budget_table.column("Spent", width=80)
     budget_table.heading("Category", text=texts[3][lan])
@@ -61,6 +67,8 @@ def open_stats():
 
     for i in range(220):
         Label(budget_graph_frame, text=f"Category {i+1}").pack()
+
+    budget_graph.bind_all("<MouseWheel>", _on_mousewheel)
 
 #=============================================
 
