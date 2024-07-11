@@ -1,6 +1,10 @@
 # m0nee v0.1.0
 
-**m0nee** is a personal finance management tool designed to help you track and manage your expenses efficiently. With features like budget tracking, expense categorization, and insightful statistics, m0nee aims to make financial planning simpler and more effective.
+**m0nee** is a personal expense tracker designed to help you track and manage your expenses efficiently. With features like budget tracking, expense categorization, and insightful statistics, m0nee aims to make financial planning simpler and more effective.
+
+## Note
+This program is still in its early development stage, so there may be bugs, errors, or potential data loss.
+If you encounter any issues or bugs while using the program, please open an issue on GitHub or contact [chankim97@outlook.com].
 
 ## Features
 
@@ -12,7 +16,7 @@
 
 ## Installation
 
-1. Download the latest release from the [Releases](https://github.com/evian-christ/m0nee/releases) page.
+1. Download the latest release from the [Releases](Releases) page.
 2. Extract the downloaded zip file to your desired location.
 3. Run `m0nee.exe` to start the application.
 
@@ -29,7 +33,6 @@ Before you start using m0nee, it is recommended to set up your expense categorie
    - In the settings window, find the section for budget.
    - Enter your monthly budget amount.
    - Save changes.
-4. **Restart Application**: Close and reopen m0nee to apply the new settings.
 
 ### Adding a New Expense
 
