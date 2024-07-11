@@ -18,7 +18,10 @@ elif settings['language'] == "한국어":
 def open_stats():
     texts = [
         ["Statistics", "통계"],
-        ["Categories", "카테고리"]
+        ["Categories", "카테고리"],
+        ["Rating", "평점"],
+        ["Category", "카테고리"],
+        ["Spent", "소비량"]
     ]
 
     root = Toplevel()
@@ -28,11 +31,45 @@ def open_stats():
 
     root.grab_set()
 
-    notebook = Notebook(root, padding=10)
-
+    notebook = Notebook(root, padding=20)
 
 #=============================================
 
     tab1 = Frame(notebook, borderwidth=2, relief="solid")
-    notebook.add(tab1, text=texts[1][lan])
+    notebook.add(tab1, text=texts[1][lan], padding=10)
+
+    budget_table = Treeview(tab1, columns=("Category", "Spent"), show="headings")
+    budget_table.grid(column=0, row=0)
+    budget_table.column("Category", width=190)
+    budget_table.column("Spent", width=80)
+    budget_table.heading("Category", text=texts[3][lan])
+    budget_table.heading("Spent", text=texts[4][lan])
+
+    budget_graph = Canvas(tab1, height=400)
+    budget_graph.grid(column=1, row=0)
+    
+    scrollbar = Scrollbar(tab1, orient=VERTICAL, command=budget_graph.yview)
+    scrollbar.grid(column=2, row=0, sticky=NS)
+
+    budget_graph.configure(yscrollcommand=scrollbar.set)
+
+    budget_graph_frame = Frame(budget_graph)
+
+    budget_graph.create_window((0, 0), window=budget_graph_frame, anchor="nw")
+
+    budget_graph.bind('<Configure>', lambda e: budget_graph.configure(scrollregion=budget_graph.bbox("all")))
+
+    for i in range(220):
+        Label(budget_graph_frame, text=f"Category {i+1}").pack()
+
+#=============================================
+
+    tab2 = Frame(notebook, borderwidth=2, relief="solid")
+    notebook.add(tab2, text=texts[2][lan])
+
+#=============================================
+
+    notebook.grid()
+
+    root.mainloop()
 
