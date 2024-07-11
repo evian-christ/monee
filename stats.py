@@ -18,7 +18,7 @@ elif settings['language'] == "한국어":
 def open_stats():
     texts = [
         ["Statistics", "통계"],
-
+        ["Categories", "카테고리"]
     ]
 
     root = Toplevel()
@@ -28,4 +28,11 @@ def open_stats():
 
     root.grab_set()
 
-    
+    notebook = Notebook(root, padding=10)
+
+
+#=============================================
+
+    tab1 = Frame(notebook, borderwidth=2, relief="solid")
+    notebook.add(tab1, text=texts[1][lan])
+

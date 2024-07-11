@@ -4,6 +4,7 @@ from dateAndTime import *
 from add import open_add
 from view import open_view
 from settings import open_settings, lan
+from stats import open_stats
 from fetch import *
 from proverbs import *
 
@@ -64,7 +65,7 @@ texts = [
 
 btn_add = Button(but, text=texts[0][lan], command=lambda: open_add(update_ui))
 btn_view = Button(but, text=texts[1][lan], command=lambda: open_view(update_ui))
-btn_stats = Button(but, text=texts[2][lan], state=DISABLED)
+btn_stats = Button(but, text=texts[2][lan], command=open_stats)
 btn_settings = Button(but, text=texts[3][lan], command=lambda: open_settings(update_ui))
 btn_refresh = Button(but, text="↻", command=lambda: update_ui(), width=3)
 
