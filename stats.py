@@ -76,9 +76,14 @@ def open_stats():
         total_spent = row[1]
         category_sums[category] = total_spent
 
-    print(category_sums)
+    ordered_dict = {key: category_sums[key] for key in name}
 
-    for i, j in zip(name, budgets):
+    budget_status = []
+
+    for i, j in zip(list(ordered_dict.values()), budgets):
+        budget_status.append("{:.0f}".format(i) + "/" + str(j))
+
+    for i, j in zip(name, budget_status):
         budget_table.insert("", "end", values=(i, j))
 
     for i in name:
